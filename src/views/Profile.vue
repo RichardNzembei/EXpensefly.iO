@@ -2,7 +2,9 @@
 import navigationBar from "@/components/navigationBar.vue";
 import { useRouter } from "vue-router";
 const router=useRouter()
-const toHomePage
+const toHomePage=()=>{
+  router.push('/')
+}
 </script>
 
 <template>
