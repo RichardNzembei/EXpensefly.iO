@@ -1,65 +1,50 @@
-<template>
-     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <a class="navbar-brand" href="#">Expenses</a>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="home.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="Expenses.html">Expenses</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="Targets.html">Targets</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="Savings.html">Savings</a>
-                    </li>
-                </ul>
-                <button class="btn btn-outline-success me-2">Profile</button>
-            </div>
-        </div>
-    </nav>
-    <div class="container">
-        <h1>Expenses</h1>
-        <p>View and manage your expenses here.</p>
+<script setup>
+import { useRouter } from 'vue-router';
+import navigationBar from '@/components/navigationBar.vue';
+const router=useRouter()
+const toHomePage=()=>{
+    router.push('/')
+}
+</script>
 
-        <!-- Expense filter form -->
-        <form id="expenseFilterForm" class="row g-3">
-            <div class="col-md-4">
-                <label for="categoryFilter" class="form-label">Filter by Category:</label>
-                <select class="form-select" id="categoryFilter">
-                    <option value="">All</option>
+<template>
+   <navigationBar/>
+   <div class="container min-h-screen w-full max-w-full">
+    <span class="inline"><img src="../assets/icons/home.png" @click="toHomePage" alt="home image" class="h-8 w-8 mt-2 ml-2">
+        <h4 class="text-center font-thin font-serif text-2xl text-gray-600">Welcome to the seamless money Tracker</h4>
+    </span>
+        <p class="text-san text-pretty text-lime-700 p-2 ml-5 text-center">Let's make your transactions easy and traceable!</p>
+
+    
+      <div class="shadow-lg rounded-lg bg-white">
+        <div class=" max-w-full p-3 space-y-2 flex flex-col lg:flex-row justify-center items-center space-x-2">
+            <div class="block">
+                <input type="text"  class="rounded-lg border-2 p-1 hover:bg-slate-100 focus:ring-2 focus:ring-green-200" placeholder="Enter expense">
+            </div>
+            <div class="block">
+                <input type="text"  class="rounded-lg border-2 p-1 hover:bg-slate-100 focus:ring-2 focus:ring-green-200" placeholder="Enter amount">
+            </div>
+            <div class="block">
+                <input type="date" class="rounded-lg border-2 p-1 hover:bg-slate-100 focus:ring-2 focus:ring-green-200">
+            </div>
+            <div class="block">
+                <select  class="p-2 border-1 rounded-lg text-blue-500">
+                    <option disabled value="category">category</option>
                     <option value="Food">Food</option>
                     <option value="Transportation">Transportation</option>
                     <option value="Utilities">Utilities</option>
-                    <!-- Add more categories as needed -->
+                   
                 </select>
             </div>
-            <div class="col-md-4">
-                <label for="dateFilter" class="form-label">Filter by Date:</label>
-                <input type="date" class="form-control" id="dateFilter">
-            </div>
-            <div class="col-md-4">
-                <button type="submit" class="btn btn-primary">Apply Filters</button>
-            </div>
-        </form>
-
-        <!-- Display filtered expenses here -->
-        <div id="spendings"></div>
-
-        <!-- Canvas for graph -->
-        <canvas id="expenseChart" width="800" height="400" class="mt-5"></canvas>
-    </div>
-
-    <!-- Footer -->
-    <footer class="text-muted">
-        <div class="container">
-            <p>&copy; 2024 Expense Tracker. @Reubeb Devs</p>
         </div>
-    </footer>
+        <div class="flex justify-center items-center">
+                <button id="addExpenseBtn" class="bg-green-400 rounded-lg shadow p-1 text-white hover:bg-white hover:text-green-600 mb-2">Add Expense</button>
+            </div>
+      </div>
+     
+    </div>
+   
+ 
+
+   
 </template>
