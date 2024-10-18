@@ -2,37 +2,38 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useTogglePassword } from "@/composables/toggle";
-
+import { useStore } from "@/stores/useStore";
 
 // Auth store and router
-const authstore = useAuthStore();
+const main = useStore();
 const router = useRouter();
 
 // Toggle password visibility composable
 const { isPassVisible, togglePassword } = useTogglePassword();
 
-// Form fields
+// Form refs
+const phone = ref("");
+const first_name = ref("");
+const last_name = ref("");
 const email = ref("");
 const password = ref("");
-const role = ref("");
-const fName = ref("");
-const lName = ref("");
 
-// Register user function
-const registerUser = () => {
-  authstore.registerUser(
-    email.value,
-    password.value,
-    role.value,
-    fName.value,
-    lName.value
-  );
-  router.push("/");
-};
+async function registerUser() {
+  try {
+    const response = await main.register(phone.value, first_name.value, last_name.value, email.value, password.value);
+    if (response) {
+      router.push("/login");
+    }
+  } catch (error) {
+    console.error("Registration failed:", error);
+    alert(error.message || "An error occurred during registration."); // Alert the user
+  }
+}
+
 </script>
 
 <template>
-  <div class="container mx-auto p-4">
+  <div class="mx-auto w-full min-h-screen p-4 bg-gradient-to-br from-green-200 to-green-900">
     <h4 class="text-2xl font-bold text-center mb-2">User Registration!!</h4>
     <p class="text-center text-gray-600 mb-8">Fill the form and submit</p>
 
@@ -40,37 +41,32 @@ const registerUser = () => {
       <div class="bg-white shadow-md rounded-lg p-6">
         <form @submit.prevent="registerUser">
           <div class="mb-6">
-            <label for="fName" class="block mt-4 mb-2">First Name</label>
+            <label for="phone" class="block mt-4 mb-2">Phone No</label>
             <input
-              v-model="fName"
+              v-model="phone"
+              type="text"
+              placeholder="Enter your phone number"
+              required
+              class="w-full p-2 border rounded-md"
+            />
+
+            <label for="first_name" class="block mt-4 mb-2">First Name</label>
+            <input
+              v-model="first_name"
               type="text"
               placeholder="Enter your first name"
               required
               class="w-full p-2 border rounded-md"
             />
 
-            <label for="lName" class="block mt-4 mb-2">Last Name</label>
+            <label for="last_name" class="block mt-4 mb-2">Last Name</label>
             <input
-              v-model="lName"
+              v-model="last_name"
               type="text"
               placeholder="Enter your last name"
               required
               class="w-full p-2 border rounded-md"
             />
-
-            <label class="block mt-4 mb-2">Role</label>
-            <select
-              v-model="role"
-              required
-              class="w-full p-3 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option disabled value="">Select Role</option>
-              <option value="product engineer">Product Engineer</option>
-              <option value="product manager">Product Manager</option>
-              <option value="CTO">CTO</option>
-              <option value="frontend dev">Frontend Dev</option>
-              <option value="backend dev">Backend Dev</option>
-            </select>
 
             <label for="email" class="block mt-4 mb-2">Email</label>
             <input
@@ -82,9 +78,7 @@ const registerUser = () => {
             />
 
             <div class="mb-4 relative">
-              <label class="block text-gray-700 font-medium mb-2"
-                >Password</label
-              >
+              <label class="block text-gray-700 font-medium mb-2">Password</label>
               <input
                 v-model="password"
                 :type="isPassVisible ? 'text' : 'password'"
@@ -95,8 +89,9 @@ const registerUser = () => {
               <span
                 class="absolute right-3 top-9 cursor-pointer text-gray-500 border-l-4 p-1"
                 @click="togglePassword"
-                >{{ isPassVisible ? "🙈" : "👁️" }}</span
               >
+                {{ isPassVisible ? "🙈" : "👁️" }}
+              </span>
             </div>
 
             <!-- Submit Button -->
@@ -114,7 +109,7 @@ const registerUser = () => {
         <!-- Already have an account link -->
         <div class="mt-4 text-center">
           <span>Already have an account?</span>
-          <router-link to="/" class="text-blue-500 hover:underline">
+          <router-link to="/login" class="text-blue-500 hover:underline">
             Sign In
           </router-link>
         </div>

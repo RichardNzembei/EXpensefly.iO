@@ -10,7 +10,7 @@ const toHomePage=()=>{
 <template>
    <navigationBar/>
    <div class="container min-h-screen w-full max-w-full">
-    <span class="inline"><img src="../assets/icons/home.png" @click="toHomePage" alt="home image" class="h-8 w-8 mt-2 ml-2">
+    <span class="inline"><img src="../assets/icons/thin-arrow.png" @click="toHomePage" alt="home image" class="h-8 w-8 mt-2 ml-2">
         <h4 class="text-center font-thin font-serif text-2xl text-gray-600">Welcome to the seamless money Tracker</h4>
     </span>
         <p class="text-san text-pretty text-lime-700 p-2 ml-5 text-center">Let's make your transactions easy and traceable!</p>
