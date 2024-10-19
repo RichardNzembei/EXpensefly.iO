@@ -87,7 +87,7 @@ import footerBar from '@/components/footerBar.vue';
         <router-link to="/expenses">Targets</router-link>
       </div>
       <div class="text-blue-300 block hover:text-blue-600">
-        <img src="../assets/icons/goods.png" alt="targets image" class="h-10 w-10 rounded-xl shadow-xl" />
+        <img src="../assets/icons/income.png" alt="targets image" class="h-10 w-10 rounded-xl shadow-xl" />
         <router-link to="/expenses">Savings</router-link>
       </div>
     </div>
