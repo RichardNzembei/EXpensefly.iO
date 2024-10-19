@@ -1,61 +1,61 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const pool = require('./config/db'); // Assuming your DB configuration is in this file
+const pool = require('./config/db');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
-app.use(bodyParser.json());
-app.use(cors()); // Enable CORS
 
-// Check database connection
+app.use(bodyParser.json());
+app.use(cors());
+
+
 pool.getConnection((err, connection) => {
   if (err) {
     console.error('Database connection failed:', err);
-    process.exit(1); // Exit the process if the database connection fails
+    process.exit(1);
   } else {
     console.log('Database connected successfully!');
-    connection.release(); // Release the connection back to the pool
+    connection.release();
   }
 });
 
-// Register user
+
 app.post('/api/register', (req, res) => {
-    const { phone, first_name, last_name, email, password } = req.body;
-  
-    // Check if all fields are provided
-    if (!phone || !first_name || !last_name || !email || !password) {
-      return res.status(400).json({ message: 'All fields are required' });
+  const { phone, first_name, last_name, email, password } = req.body;
+
+
+  if (!phone || !first_name || !last_name || !email || !password) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
+
+
+  pool.query('SELECT * FROM users WHERE phone = ?', [phone], (err, existingUser) => {
+    if (err) {
+      console.error('Error during user check:', err);
+      return res.status(500).json({ message: 'Server error' });
     }
-  
-    // Check if user already exists
-    pool.query('SELECT * FROM users WHERE phone = ?', [phone], (err, existingUser) => {
-      if (err) {
-        console.error('Error during user check:', err);
-        return res.status(500).json({ message: 'Server error' });
-      }
-      if (existingUser.length) {
-        return res.status(400).json({ message: 'User already exists' });
-      }
-  
-      // Insert new user into the database
-      pool.query(
-        'INSERT INTO users (phone, first_name, last_name, email, password) VALUES (?, ?, ?, ?, ?)',
-        [phone, first_name, last_name, email, password],
-        (err) => {
-          if (err) {
-            console.error('Error during registration:', err);
-            return res.status(500).json({ message: 'Server error' });
-          }
-          res.status(201).json({ message: 'User registered successfully' });
+    if (existingUser.length) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
+
+
+    pool.query(
+      'INSERT INTO users (phone, first_name, last_name, email, password) VALUES (?, ?, ?, ?, ?)',
+      [phone, first_name, last_name, email, password],
+      (err) => {
+        if (err) {
+          console.error('Error during registration:', err);
+          return res.status(500).json({ message: 'Server error' });
         }
-      );
-    });
+        res.status(201).json({ message: 'User registered successfully' });
+      }
+    );
   });
-  
-// Login user
+});
+
+
 app.post('/api/login', (req, res) => {
   const { email, password } = req.body;
 
@@ -70,7 +70,20 @@ app.post('/api/login', (req, res) => {
   });
 });
 
-// Start the server
+app.get('/api/user/:id', (req, res) => {
+  const userId = req.params.id;
+
+  pool.query('SELECT * FROM users WHERE id = ?', [userId], (err, result) => {
+    if (err) {
+      console.error('Error fetching user data:', err);
+      return res.status(500).json({ message: 'Server error' });
+    }
+    if (!result.length) return res.status(404).json({ message: 'User not found' });
+
+    res.status(200).json(result[0]);
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

@@ -4,10 +4,8 @@ import footerBar from '@/components/footerBar.vue';
 </script>
 <template>
   <div class="bg-gray-50 min-h-screen flex flex-col">
-  <navigationBar/>
-    <div
-      class="mx-auto mt-8 flex flex-col md:flex-row space-y-2 md:space-x-4 p-2 border-b-4"
-    >
+    <navigationBar />
+    <div class="mx-auto mt-8 flex flex-col md:flex-row space-y-2 md:space-x-4 p-2 border-b-4">
       <div class="bg-slate-100 w-full md:w-1/3 rounded-lg p-4 shadow-md">
         <h2 class="text-center text-lg font-semibold text-green-400">
           Why Track Your Expenses?
@@ -43,8 +41,8 @@ import footerBar from '@/components/footerBar.vue';
       </div>
     </div>
     <h2 class="block text-center text-lg font-semibold text-green-700 mt-6 border-b-1">
-          Services
-        </h2>
+      Services
+    </h2>
     <div class="container mx-auto mt-8 bg-white  flex justify-center items-center space-x-6 p-4">
       <div class="text-blue-300 block hover:text-blue-600">
         <img src="../assets/icons/expenses (1).png" alt="expenses image" class="h-10 w-10 rounded-xl shadow-xl" />
@@ -60,8 +58,8 @@ import footerBar from '@/components/footerBar.vue';
       </div>
     </div>
     <h2 class="block text-center text-lg font-semibold text-green-700 mt-6 border-b-1">
-          Monocomy
-        </h2>
+      Monocomy
+    </h2>
     <div class="container mx-auto mt-8 bg-white  flex justify-center items-center space-x-6 p-4 ">
       <div class="text-blue-300 block hover:text-blue-600">
         <img src="../assets/icons/creative-education.png" alt="expenses image" class="h-10 w-10 rounded-xl shadow-xl" />
@@ -77,8 +75,8 @@ import footerBar from '@/components/footerBar.vue';
       </div>
     </div>
     <h2 class="block text-center text-lg font-semibold text-green-700 mt-6 border-b-1">
-          Events
-        </h2>
+      Events
+    </h2>
     <div class="container mx-auto mt-8 bg-white  flex justify-center items-center space-x-6 p-4 ">
       <div class="text-blue-300 block hover:text-blue-600">
         <img src="../assets/icons/revenue.png" alt="expenses image" class="h-10 w-10 rounded-xl shadow-xl" />
@@ -94,6 +92,5 @@ import footerBar from '@/components/footerBar.vue';
       </div>
     </div>
   </div>
-  <footerBar/>
+  <footerBar />
 </template>
-  

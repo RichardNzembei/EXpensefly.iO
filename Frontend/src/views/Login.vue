@@ -4,12 +4,11 @@ import { useRouter } from "vue-router";
 import { useTogglePassword } from "@/composables/toggle";
 import { useStore } from "@/stores/useStore";
 
-// Auth store and router
 const main = useStore();
-const { isPassVisible, togglePassword } = useTogglePassword(); // Password visibility toggle
+const { isPassVisible, togglePassword } = useTogglePassword();
 const router = useRouter();
 
-// Login form refs
+
 const email = ref("");
 const password = ref("");
 
@@ -17,7 +16,7 @@ const loginUser = async () => {
   try {
     const loginSuccess = await main.login(email.value, password.value);
     if (loginSuccess) {
-      router.push("/dashboard"); // Redirect to dashboard on success
+      router.push("/dashboard");
     } else {
       alert("Login failed. Please check your credentials.");
     }
@@ -29,7 +28,7 @@ const loginUser = async () => {
 </script>
 
 <template>
-  <div class="min-h-screen flex justify-center items-center bg-gradient-to-l from-slate-300 to-sky-400">
+  <div class="min-h-screen flex justify-center items-center bg-gradient-to-l from-green-200 to-green-800">
     <div class="container max-w-md w-full mx-auto px-3">
       <div class="bg-white p-8 rounded-lg shadow-lg">
         <h3 class="text-center font-bold text-sky-600 mb-3 max-w-full text-2xl border-b-2 p-3">
@@ -38,42 +37,29 @@ const loginUser = async () => {
         <form @submit.prevent="loginUser">
           <div class="mb-4">
             <label for="email" class="block text-gray-500 font-medium mb-2">Email</label>
-            <input
-              v-model="email"
-              type="text"
-              placeholder="Enter email"
+            <input v-model="email" type="text" placeholder="Enter email"
               class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
+              required />
           </div>
           <div class="mb-4 relative">
             <label for="password" class="block text-gray-500 font-medium mb-2">Password</label>
-            <input
-              v-model="password"
-              :type="isPassVisible ? 'text' : 'password'"
-              placeholder="*******"
+            <input v-model="password" :type="isPassVisible ? 'text' : 'password'" placeholder="*******"
               class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-            <span
-              class="absolute right-3 top-10 cursor-pointer text-gray-500 border-l-4 p-1"
-              @click="togglePassword"
-            >
+              required />
+            <span class="absolute right-3 top-10 cursor-pointer text-gray-500 border-l-4 p-1" @click="togglePassword">
               {{ isPassVisible ? "🙈" : "👁️" }}
             </span>
           </div>
           <div>
-            <button
-              type="submit"
-              class="bg-blue-300 rounded-lg p-1 w-full text-white hover:bg-slate-200 hover:text-blue-500"
-            >
+            <button type="submit"
+              class="bg-blue-300 rounded-lg p-1 w-full text-white hover:bg-slate-200 hover:text-blue-500">
               Login
             </button>
           </div>
         </form>
         <div class="mt-4 text-center">
           <span>Don't have an account?</span>
-          <router-link to="/register" class="text-blue-500 hover:underline">
+          <router-link to="/register" class="text-green-500 hover:underline">
             Sign Up
           </router-link>
         </div>

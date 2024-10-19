@@ -4,14 +4,14 @@ import { useRouter } from "vue-router";
 import { useTogglePassword } from "@/composables/toggle";
 import { useStore } from "@/stores/useStore";
 
-// Auth store and router
+
 const main = useStore();
 const router = useRouter();
 
-// Toggle password visibility composable
+
 const { isPassVisible, togglePassword } = useTogglePassword();
 
-// Form refs
+
 const phone = ref("");
 const first_name = ref("");
 const last_name = ref("");
@@ -42,74 +42,43 @@ async function registerUser() {
         <form @submit.prevent="registerUser">
           <div class="mb-6">
             <label for="phone" class="block mt-4 mb-2">Phone No</label>
-            <input
-              v-model="phone"
-              type="text"
-              placeholder="Enter your phone number"
-              required
-              class="w-full p-2 border rounded-md"
-            />
+            <input v-model="phone" type="text" placeholder="Enter your phone number" required
+              class="w-full p-2 border rounded-md" />
 
             <label for="first_name" class="block mt-4 mb-2">First Name</label>
-            <input
-              v-model="first_name"
-              type="text"
-              placeholder="Enter your first name"
-              required
-              class="w-full p-2 border rounded-md"
-            />
+            <input v-model="first_name" type="text" placeholder="Enter your first name" required
+              class="w-full p-2 border rounded-md" />
 
             <label for="last_name" class="block mt-4 mb-2">Last Name</label>
-            <input
-              v-model="last_name"
-              type="text"
-              placeholder="Enter your last name"
-              required
-              class="w-full p-2 border rounded-md"
-            />
+            <input v-model="last_name" type="text" placeholder="Enter your last name" required
+              class="w-full p-2 border rounded-md" />
 
             <label for="email" class="block mt-4 mb-2">Email</label>
-            <input
-              v-model="email"
-              type="email"
-              placeholder="Enter your email"
-              required
-              class="w-full p-2 border rounded-md"
-            />
+            <input v-model="email" type="email" placeholder="Enter your email" required
+              class="w-full p-2 border rounded-md" />
 
             <div class="mb-4 relative">
               <label class="block text-gray-700 font-medium mb-2">Password</label>
-              <input
-                v-model="password"
-                :type="isPassVisible ? 'text' : 'password'"
-                placeholder="*******"
-                required
-                class="w-full p-2 border rounded-md"
-              />
-              <span
-                class="absolute right-3 top-9 cursor-pointer text-gray-500 border-l-4 p-1"
-                @click="togglePassword"
-              >
+              <input v-model="password" :type="isPassVisible ? 'text' : 'password'" placeholder="*******" required
+                class="w-full p-2 border rounded-md" />
+              <span class="absolute right-3 top-9 cursor-pointer text-gray-500 border-l-4 p-1" @click="togglePassword">
                 {{ isPassVisible ? "🙈" : "👁️" }}
               </span>
             </div>
 
             <!-- Submit Button -->
             <div>
-              <button
-                type="submit"
-                class="bg-blue-300 rounded-lg p-1 w-full text-white hover:bg-slate-200 hover:text-blue-500"
-              >
+              <button type="submit"
+                class="bg-blue-300 rounded-lg p-1 w-full text-white hover:bg-slate-200 hover:text-blue-500">
                 Register
               </button>
             </div>
           </div>
         </form>
 
-        <!-- Already have an account link -->
         <div class="mt-4 text-center">
           <span>Already have an account?</span>
-          <router-link to="/login" class="text-blue-500 hover:underline">
+          <router-link to="/login" class="text-green-500 hover:underline">
             Sign In
           </router-link>
         </div>

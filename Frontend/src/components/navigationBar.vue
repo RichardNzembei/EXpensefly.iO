@@ -1,29 +1,29 @@
 <script setup>
+import { onMounted } from 'vue';
+import { useFetchUser } from '@/stores/useFetchUser';
 import { useRouter } from 'vue-router';
-const router=useRouter()
-const toProfilePage=()=>{
-    router.push('/profile')
+const router = useRouter()
+const toProfilePage = () => {
+  router.push('/profile')
 }
+const store = useFetchUser()
+const userId = store.user?.id || localStorage.getItem('userId');
+const user = store.user;
+const fName =
+  user.first_name.charAt(0).toUpperCase() + user.first_name.slice(1);
+
 </script>
 
 <template>
-      <div
-      class="flex items-center justify-between shadow-xl rounded-lg p-4 border border-b-2 bg-white"
-    >
-      <h1
-        class="font-sans lg:text-3xl text-green-600 hover:text-green-800 transition duration-300 text-xl"
-      >
-        EXpensefly.iO
-      </h1>
-      <p class="flex space-x-2" @click="toProfilePage">
-        <img
-        src="../assets/img/profile.png"
-        alt="profile image"
-        class="rounded-xl shadow-lg"
-      />
-      <span class="mt-2 text-mono text-medium">Hello,,<strong>Richard😊</strong></span>
-      
-      </p>
-   
-    </div>
+  <div class="flex items-center justify-between shadow-xl rounded-lg p-4 border border-b-2 bg-white">
+    <h1 class="font-sans lg:text-3xl text-green-600 hover:text-green-800 transition duration-300 text-xl">
+      EXpensefly.iO
+    </h1>
+    <p class="flex space-x-2" @click="toProfilePage">
+      <img src="../assets/img/profile.png" alt="profile image" class="rounded-xl shadow-lg" />
+      <span class="mt-2 text-mono text-medium">Hello,,<strong>{{ fName }}😊</strong></span>
+
+    </p>
+
+  </div>
 </template>

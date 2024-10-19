@@ -6,6 +6,7 @@ import Expenses from '@/views/Expenses.vue'
 import Savings from '@/views/Savings.vue'
 import Targets from '@/views/Targets.vue'
 import Profile from '@/views/Profile.vue'
+import { useStore } from '@/stores/useStore'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -45,6 +46,17 @@ const router = createRouter({
       component:Profile
     }
   ]
+  
 })
+router.beforeEach((to, from, next) => {
+  const store = useStore();
+
+  // Redirect to login if user is not logged in and trying to access a protected page
+  if (!store.user && to.name !== 'login' && to.name !== 'register') {
+    next({ name: 'login' });
+  } else {
+    next();
+  }
+});
 
 export default router
