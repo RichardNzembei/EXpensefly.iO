@@ -1,10 +1,18 @@
 <script setup>
 import navigationBar from "@/components/navigationBar.vue";
 import { useRouter } from "vue-router";
+import { useFetchUser } from "@/stores/useFetchUser";
+
 const router = useRouter()
 const toHomePage = () => {
   router.push('/dashboard')
 }
+const store = useFetchUser()
+const userId = store.user?.id || localStorage.getItem('userId');
+const user = store.user;
+console.log(user)
+const fullName=user.first_name.toUpperCase()+' '+ user.last_name.toUpperCase()
+const phoneNo=254+user.phone.slice(1)
 </script>
 
 <template>
@@ -17,9 +25,9 @@ const toHomePage = () => {
         <div>
           <p class="flex space-x-2 m-auto">
             <img src="../assets/img/profile.png" alt="profile image" class="h-14 w-14 rounded-xl shadow-xl" />
-            <span class="mt-4 text-mono text-slate-700"> 254716899396 </span>
+            <span class="mt-4 text-mono text-slate-700"> {{ phoneNo }} </span>
           </p>
-          <span class="ml-14  text-bold">RICHARD NZEMBEI REUBEN</span>
+          <span class="ml-14  text-bold">{{ fullName}}</span>
         </div>
         <div class="flex bg-white space-x-2 mt-10">
           <p class="block">
@@ -39,12 +47,13 @@ const toHomePage = () => {
           <h1 class="text-mono text-center p-3 text-slate-700 mt-5">SETTINGS</h1>
           <div class="flex space-x-2">
             <img src="../assets/img/share.jpg" alt="share image" class="h-12">
-            <span class="mt-3">SHARE WEB LINK</span>
+            <span class="mt-3 hover:text-sky-300">SHARE WEB LINK</span>
           </div>
-          <div class="flex space-x-2" @click="logout">
+          <RouterLink to="/login"class="flex space-x-2">
             <img src="../assets/icons/log-out.png" alt="log out image" class="h-12">
-            <span class="mt-3">LOG OUT</span>
-          </div>
+            <span class="mt-3 hover:text-sky-300">LOG OUT</span>
+          </RouterLink>
+        
         </div>
       </div>
     </div>

@@ -66,7 +66,7 @@ app.post('/api/login', (req, res) => {
     }
     if (!user.length) return res.status(400).json({ message: 'Invalid email or password' });
 
-    res.json({ user: { id: user[0].id, first_name: user[0].first_name, phone: user[0].phone } });
+    res.json({ user: { id: user[0].id, first_name: user[0].first_name, phone: user[0].phone ,last_name:user[0].last_name,email:user[0].email} });
   });
 });
 
@@ -82,6 +82,33 @@ app.get('/api/user/:id', (req, res) => {
 
     res.status(200).json(result[0]);
   });
+});
+app.post('/api/add-expense', async (req, res) => {
+  const { userId, name, amount, date, category } = req.body;
+
+  try {
+    // Include all fields (user_id, name, amount, date, and category) in the query
+    await pool.query(
+      'INSERT INTO expenses (user_id, name, amount, date, category) VALUES (?, ?, ?, ?, ?)',
+      [userId, name, amount, date, category]
+    );
+    res.status(201).json({ message: 'Expense added successfully' });
+  } catch (error) {
+    console.error('Error adding expense:', error);
+    res.status(500).json({ message: 'Server error', error });
+  }
+});
+
+app.get('/api/expenses/:userId', async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const [rows] = await pool.query('SELECT * FROM expenses WHERE user_id = ?', [userId]);
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error('Error fetching expenses:', error);
+    res.status(500).json({ message: 'Server error', error });
+  }
 });
 
 app.listen(PORT, () => {

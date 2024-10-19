@@ -48,22 +48,36 @@ export const useStore = defineStore('main', {
       }
     },
 
-    async addExpense(name, amount) {
-      if (!this.user) return;
-      const response = await fetch('http://localhost:3000/api/add-expense', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: this.user.id, name, amount })
-      });
-      return response.json();
-    },
-
-
-    async fetchExpenses() {
-      if (!this.user) return;
-      const response = await fetch(`http://localhost:3000/api/expenses/${this.user.id}`);
-      const expenses = await response.json();
-      this.expenses = expenses;
+    async addExpense(name, amount, category, date) {
+      if (!this.user) {
+        console.warn('User not logged in, cannot add expense.');
+        return;
+      }
+    
+      try {
+        const response = await fetch('http://localhost:3000/api/add-expense', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: this.user.id, name, amount, date, category })
+        });
+    
+        const result = await response.json();
+    
+        if (response.ok) {
+          console.log('Expense added successfully:', result);
+        } else {
+          console.error('Failed to add expense:', result);
+        }
+    
+        return result;
+      } catch (error) {
+        console.error('Error adding expense:', error);
+        return { message: 'Server error', error };
+      }
     }
+    
+
+
+
   }
 });

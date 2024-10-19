@@ -58,20 +58,20 @@ import footerBar from '@/components/footerBar.vue';
       </div>
     </div>
     <h2 class="block text-center text-lg font-semibold text-green-700 mt-6 border-b-1">
-      Monocomy
+    Educational
     </h2>
-    <div class="container mx-auto mt-8 bg-white  flex justify-center items-center space-x-6 p-4 ">
+    <div class="container mx-auto mt-8 bg-white  flex justify-center items-center space-x-8 p-4 ">
       <div class="text-blue-300 block hover:text-blue-600">
-        <img src="../assets/icons/creative-education.png" alt="expenses image" class="h-10 w-10 rounded-xl shadow-xl" />
-        <router-link to="/expenses">Expenses</router-link>
+        <img src="../assets/icons/creative-education.png" alt="expenses image" class="h-10 w-10 rounded-xl shadow-xl ml-4" />
+        <router-link to="/expenses" >Monocomy</router-link>
       </div>
       <div class="text-blue-300 block hover:text-blue-600">
         <img src="../assets/icons/expenses.png" alt="targets image" class="h-10 w-10 rounded-xl shadow-xl" />
-        <router-link to="/expenses">Targets</router-link>
+        <router-link to="/expenses">SMMEs</router-link>
       </div>
       <div class="text-blue-300 block hover:text-blue-600">
-        <img src="../assets/icons/goods.png" alt="targets image" class="h-10 w-10 rounded-xl shadow-xl" />
-        <router-link to="/expenses">Savings</router-link>
+        <img src="../assets/icons/income.png" alt="targets image" class="h-10 w-10 rounded-xl shadow-xl" />
+        <router-link to="/expenses">crypto</router-link>
       </div>
     </div>
     <h2 class="block text-center text-lg font-semibold text-green-700 mt-6 border-b-1">

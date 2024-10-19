@@ -66,7 +66,7 @@ async function registerUser() {
               </span>
             </div>
 
-            <!-- Submit Button -->
+           
             <div>
               <button type="submit"
                 class="bg-blue-300 rounded-lg p-1 w-full text-white hover:bg-slate-200 hover:text-blue-500">

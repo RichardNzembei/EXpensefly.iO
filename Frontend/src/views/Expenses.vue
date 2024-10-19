@@ -1,10 +1,24 @@
 <script setup>
+import {ref, onMounted} from 'vue'
 import { useRouter } from 'vue-router';
 import navigationBar from '@/components/navigationBar.vue';
+import { useStore } from '@/stores/useStore';
+const store=useStore()
 const router = useRouter()
 const toHomePage = () => {
     router.push('/dashboard')
 }
+const date=ref('')
+const amount=ref('')
+const name=ref('')
+const category=ref('')
+const addNewExpense=async()=>{
+await store.addExpense(name.value,amount.value,category.value,date.value)
+
+
+}
+
+
 </script>
 
 <template>
@@ -22,21 +36,29 @@ const toHomePage = () => {
         <div class="shadow-lg rounded-lg bg-white">
             <div class=" max-w-full p-3 space-y-2 flex flex-col lg:flex-row justify-center items-center space-x-2">
                 <div class="block">
-                    <input type="text"
+                    <input
+                    v-model="name"
+                     type="text"
                         class="rounded-lg border-2 p-1 hover:bg-slate-100 focus:ring-2 focus:ring-green-200"
                         placeholder="Enter expense">
                 </div>
                 <div class="block">
-                    <input type="text"
+                    <input 
+                      v-model="amount"
+                    type="text"
                         class="rounded-lg border-2 p-1 hover:bg-slate-100 focus:ring-2 focus:ring-green-200"
                         placeholder="Enter amount">
                 </div>
                 <div class="block">
-                    <input type="date"
+                    <input 
+                    v-model="date"
+                    type="date"
                         class="rounded-lg border-2 p-1 hover:bg-slate-100 focus:ring-2 focus:ring-green-200">
                 </div>
                 <div class="block">
-                    <select class="p-2 border-1 rounded-lg text-blue-500">
+                    <select 
+                    v-model="category"
+                    class="p-2 border-1 rounded-lg text-blue-500">
                         <option disabled value="category">category</option>
                         <option value="Food">Food</option>
                         <option value="Transportation">Transportation</option>
@@ -46,12 +68,13 @@ const toHomePage = () => {
                 </div>
             </div>
             <div class="flex justify-center items-center">
-                <button id="addExpenseBtn"
+                <button @click="addNewExpense"
                     class="bg-green-400 rounded-lg shadow p-1 text-white hover:bg-white hover:text-green-600 mb-2">Add
                     Expense</button>
             </div>
         </div>
-
+        <h2>Your Expenses</h2>
+    
     </div>
 
 
