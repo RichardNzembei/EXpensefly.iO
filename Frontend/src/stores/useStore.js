@@ -55,7 +55,7 @@ export const useStore = defineStore('main', {
       }
     
       try {
-        const response = await fetch('http://localhost:3000/api/add-expense', {
+        const response = await fetch('https://expensefly-io-1.onrender.com/api/add-expense', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ userId: this.user.id, name, amount, date, category })
