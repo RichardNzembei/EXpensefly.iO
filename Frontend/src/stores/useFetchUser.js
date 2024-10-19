@@ -8,7 +8,7 @@ export const useFetchUser = defineStore('main', {
 
     async fetchUserData(userId) {
       try {
-        const response = await fetch(`http://localhost:3000/api/user/${userId}`);
+        const response = await fetch(`https://expensefly-io-1.onrender.com/api/user/${userId}`);
 
         if (!response.ok) {
           const errorData = await response.json();

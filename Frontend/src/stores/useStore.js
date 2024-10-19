@@ -8,7 +8,7 @@ export const useStore = defineStore('main', {
   actions: {
 
     async register(phone, first_name, last_name, email, password) {
-      const response = await fetch('http://localhost:3000/api/register', {
+      const response = await fetch('https://expensefly-io-1.onrender.com/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phone, first_name, last_name, email, password })
@@ -24,7 +24,7 @@ export const useStore = defineStore('main', {
 
     async login(email, password) {
       try {
-        const response = await fetch('http://localhost:3000/api/login', {
+        const response = await fetch('https://expensefly-io-1.onrender.com/api/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password })
