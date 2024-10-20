@@ -3,10 +3,11 @@ import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useFetchUser } from "@/stores/useFetchUser";
 import navigationBar from "@/components/navigationBar.vue";
+import { useStore } from "@/stores/useStore";
 
 const router = useRouter();
 const store = useFetchUser();
-
+const main = useStore()
 onMounted(() => {
   store.initializeUser();
 });
@@ -23,6 +24,10 @@ const fullName = computed(() => {
 const phoneNo = computed(() => {
   return user.value ? `254${user.value.phone.slice(1)}` : '';
 });
+const handleLogout = () => {
+  main.logout();
+  router.push('/login');
+};
 </script>
 
 <template>
@@ -61,10 +66,10 @@ const phoneNo = computed(() => {
             <img src="../assets/img/share.jpg" alt="share image" class="h-12">
             <span class="mt-3 hover:text-sky-300">SHARE WEB LINK</span>
           </div>
-          <RouterLink to="/login" class="flex space-x-2">
+          <div @click="handleLogout" class="flex space-x-2 cursor-pointer">
             <img src="../assets/icons/log-out.png" alt="log out image" class="h-12">
             <span class="mt-3 hover:text-sky-300">LOG OUT</span>
-          </RouterLink>
+          </div>
         </div>
       </div>
     </div>
