@@ -12,11 +12,13 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
+    "echarts": "^5.5.1",
     "express": "^4.21.1",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.11.3",
     "pinia": "^2.2.4",
     "vue": "^3.5.12",
+    "vue-echarts": "^7.0.3",
     "vue-router": "^4.4.5"
   },
   "devDependencies": {

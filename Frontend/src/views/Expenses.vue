@@ -1,19 +1,21 @@
 <script setup>
-import {ref, onMounted} from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router';
 import navigationBar from '@/components/navigationBar.vue';
 import { useStore } from '@/stores/useStore';
-const store=useStore()
+import chart from '@/components/chart.vue';
+import userExpenses from '@/components/userExpenses.vue';
+const store = useStore()
 const router = useRouter()
 const toHomePage = () => {
     router.push('/dashboard')
 }
-const date=ref('')
-const amount=ref('')
-const name=ref('')
-const category=ref('')
-const addNewExpense=async()=>{
-await store.addExpense(name.value,amount.value,category.value,date.value)
+const date = ref('')
+const amount = ref('')
+const name = ref('')
+const category = ref('')
+const addNewExpense = async () => {
+    await store.addExpense(name.value, amount.value, category.value, date.value)
 
 
 }
@@ -23,7 +25,7 @@ await store.addExpense(name.value,amount.value,category.value,date.value)
 
 <template>
     <navigationBar />
-    <div class="container min-h-screen w-full max-w-full">
+    <div class=" min-h-screen w-full max-w-full">
         <span class="inline"><img src="../assets/icons/thin-arrow.png" @click="toHomePage" alt="home image"
                 class="h-8 w-8 mt-2 ml-2">
             <h4 class="text-center font-thin font-serif text-2xl text-gray-600">Welcome to the seamless money Tracker
@@ -36,29 +38,21 @@ await store.addExpense(name.value,amount.value,category.value,date.value)
         <div class="shadow-lg rounded-lg bg-white">
             <div class=" max-w-full p-3 space-y-2 flex flex-col lg:flex-row justify-center items-center space-x-2">
                 <div class="block">
-                    <input
-                    v-model="name"
-                     type="text"
+                    <input v-model="name" type="text"
                         class="rounded-lg border-2 p-1 hover:bg-slate-100 focus:ring-2 focus:ring-green-200"
                         placeholder="Enter expense">
                 </div>
                 <div class="block">
-                    <input 
-                      v-model="amount"
-                    type="text"
+                    <input v-model="amount" type="text"
                         class="rounded-lg border-2 p-1 hover:bg-slate-100 focus:ring-2 focus:ring-green-200"
                         placeholder="Enter amount">
                 </div>
                 <div class="block">
-                    <input 
-                    v-model="date"
-                    type="date"
+                    <input v-model="date" type="date"
                         class="rounded-lg border-2 p-1 hover:bg-slate-100 focus:ring-2 focus:ring-green-200">
                 </div>
                 <div class="block">
-                    <select 
-                    v-model="category"
-                    class="p-2 border-1 rounded-lg text-blue-500">
+                    <select v-model="category" class="p-2 border-1 rounded-lg text-blue-500">
                         <option disabled value="category">category</option>
                         <option value="Food">Food</option>
                         <option value="Transportation">Transportation</option>
@@ -73,8 +67,16 @@ await store.addExpense(name.value,amount.value,category.value,date.value)
                     Expense</button>
             </div>
         </div>
-        <h2>Your Expenses</h2>
-    
+        <h1 class="text-sky-500 text-center p-2 mt-5 underline">EXPENSES</h1>
+        <div class="flex flex-col lg:flex-row">
+
+            <div class="bg-white rounded-xl w-full ">
+                <chart />
+            </div>
+            <div class="bg-white rounded-xl w-full">
+                <userExpenses />
+            </div>
+        </div>
     </div>
 
 

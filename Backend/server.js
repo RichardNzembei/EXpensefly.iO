@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 app.use(cors());
-
+//registration
 app.post('/api/register', async (req, res) => {
   const { phone, first_name, last_name, email, password } = req.body;
 
@@ -38,7 +38,7 @@ app.post('/api/register', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
-
+//login
 app.post('/api/login', async (req, res) => {
   const { phone, password } = req.body;
 
@@ -72,21 +72,26 @@ app.get('/api/user/:id', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
-
+//add-expenses
 app.post('/api/add-expense', async (req, res) => {
   const { userId, name, amount, date, category } = req.body;
 
   try {
-    await firestore.collection('expenses').doc(userId).set({
+
+    const expensesRef = firestore.collection('users').doc(userId).collection('expenses');
+
+
+    const expenseRef = expensesRef.doc();
+    await expenseRef.set({
       name,
       amount,
       date,
       category,
-    });
+    }, { merge: true });
 
-    res.status(201).json({ message: 'Expense added successfully' });
+    res.status(201).json({ message: 'Expense added/updated successfully', expenseId: expenseRef.id });
   } catch (error) {
-    console.error('Error adding expense:', error);
+    console.error('Error adding/updating expense:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -95,15 +100,30 @@ app.get('/api/expenses/:userId', async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const expenseSnapshot = await firestore.collection('expenses').where('userId', '==', userId).get();
+    console.log(`Received request to fetch expenses for userId: ${userId}`);
+
+    // Fetch expenses sub-collection from Firestore
+    const expenseSnapshot = await firestore.collection('users').doc(userId).collection('expenses').get();
+    
+    console.log(`Query executed for userId: ${userId}`);
+
+    if (expenseSnapshot.empty) {
+      console.log(`No expenses found for userId: ${userId}`);
+      return res.status(200).json([]);
+    }
+
+    // Map the fetched expenses into an array
     const expenses = expenseSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    
+    console.log(`Expenses fetched for userId ${userId}:`, expenses);
 
     res.status(200).json(expenses);
   } catch (error) {
-    console.error('Error fetching expenses:', error);
+    console.error('Error fetching expenses for userId:', userId, error);
     res.status(500).json({ message: 'Server error' });
   }
 });
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

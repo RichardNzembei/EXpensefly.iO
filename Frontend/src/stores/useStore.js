@@ -25,27 +25,41 @@ export const useStore = defineStore('main', {
       return response.json();
     },
 
-    async login(phone, password) { 
+    async login(phone, password) {
       try {
         const response = await fetch(`${apiBaseUrl}/api/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ phone, password }) 
+          body: JSON.stringify({ phone, password })
         });
 
         if (!response.ok) {
           const errorData = await response.json();
           throw new Error(errorData.message || 'Login failed');
         }
-
         const data = await response.json();
         this.user = data.user;
-        localStorage.setItem('userId', data.user.id); 
+        localStorage.setItem('userId', data.user.id);
+        localStorage.setItem('user', JSON.stringify(data.user));
+
+        console.log('Login successful:', data.user);
         return true;
       } catch (error) {
-        console.error('Login error:', error);
+        console.error('Login error:', error.message || error);
         return false;
       }
+    },
+    initializeUser() {
+      const user = localStorage.getItem('user');
+      if (user) {
+        this.user = JSON.parse(user);
+      }
+    },
+
+    logout() {
+      this.user = null;
+      localStorage.removeItem('user');
+      localStorage.removeItem('userId');
     },
 
     async addExpense(name, amount, category, date) {
@@ -54,14 +68,14 @@ export const useStore = defineStore('main', {
         return;
       }
 
-      const userId = this.user.id; 
+      const userId = this.user.id;
 
       try {
         const response = await fetch(`${apiBaseUrl}/api/add-expense`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            userId, 
+            userId,
             name,
             amount,
             date,
@@ -83,6 +97,42 @@ export const useStore = defineStore('main', {
         console.error('Error adding expense:', error);
         return { message: 'Server error', error };
       }
+    },
+    async fetchExpenses() {
+      if (!this.user) {
+        console.warn('User not logged in, cannot fetch expenses.');
+        return;
+      }
+
+      const userId = this.user.id;
+      console.log(`Starting to fetch expenses for user ID: ${userId}`);
+
+      try {
+        const response = await fetch(`${apiBaseUrl}/api/expenses/${userId}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          console.log('Response OK. Expenses fetched successfully for user ID:', userId);
+          console.log('Fetched expenses:', result);
+
+
+          this.expenses = result;
+          console.log('Assigned fetched expenses to state:', this.expenses);
+        } else {
+          console.error('Failed to fetch expenses. Status:', response.status, 'Message:', result);
+        }
+
+        return result;
+      } catch (error) {
+        console.error('Error fetching expenses for user ID:', userId, error);
+        return { message: 'Server error', error };
+      }
     }
+
+
   }
 });

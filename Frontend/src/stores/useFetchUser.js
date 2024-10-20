@@ -9,7 +9,14 @@ export const useFetchUser = defineStore('fetchUser', {
     user: null,
   }),
   actions: {
-    async fetchUserData(phone) { 
+    async initializeUser() {
+      const phone = localStorage.getItem('userId');
+      if (phone) {
+        await this.fetchUserData(phone);
+      }
+    },
+
+    async fetchUserData(phone) {
       try {
         const response = await fetch(`${apiBaseUrl}/api/user/${phone}`);
 
@@ -26,3 +33,4 @@ export const useFetchUser = defineStore('fetchUser', {
     }
   }
 });
+

@@ -1,9 +1,14 @@
-<script setup>
-import { useRouter } from 'vue-router';
-const router=useRouter()
-</script>
-
 <template>
   <RouterView />
 </template>
 
+<script setup>
+import { onMounted } from 'vue';
+import { useStore } from '@/stores/useStore';
+
+const store = useStore();
+
+onMounted(() => {
+  store.initializeUser();
+});
+</script>

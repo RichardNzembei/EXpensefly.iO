@@ -18,45 +18,43 @@ const router = createRouter({
     {
       path: '/register',
       name: 'register',
-      component:Register
+      component: Register
     },
     {
       path: '/login',
       name: 'login',
-      component:Login
+      component: Login
     },
     {
       path: '/expenses',
       name: 'expenses',
-      component:Expenses
+      component: Expenses
     },
     {
       path: '/savings',
       name: 'savings',
-      component:Savings
+      component: Savings
     },
     {
       path: '/targets',
       name: 'targets',
-      component:Targets
+      component: Targets
     },
     {
       path: '/profile',
       name: 'profile',
-      component:Profile
+      component: Profile
     }
   ]
-  
+
 })
+
 router.beforeEach((to, from, next) => {
   const store = useStore();
-
-  // Redirect to login if user is not logged in and trying to access a protected page
   if (!store.user && to.name !== 'login' && to.name !== 'register') {
     next({ name: 'login' });
   } else {
     next();
   }
 });
-
 export default router
