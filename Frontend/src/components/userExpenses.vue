@@ -19,7 +19,7 @@ onMounted(async () => {
             <ul class="divide-y divide-gray-200">
                 <li v-for="expense in expenses" :key="expense.id" class="py-3 flex justify-between items-center">
                     <span class="text-gray-600">{{ expense.name }}</span>
-                    <span class="font-bold text-gray-800">{{ expense.amount | currency }}</span>
+                    <span class="font-bold text-gray-800">{{ expense.amount}} ksh</span>
                 </li>
             </ul>
         </div>
