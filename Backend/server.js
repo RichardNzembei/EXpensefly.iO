@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const firestore = require('./firebaseConfig'); // Import Firestore
+const firestore = require('./firebaseConfig');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,18 +18,18 @@ app.post('/api/register', async (req, res) => {
 
   try {
     const userRef = firestore.collection('users');
-    const existingUser = await userRef.where('phone', '==', phone).get();
+    const existingUser = await userRef.doc(phone).get();
 
-    if (!existingUser.empty) {
+    if (existingUser.exists) {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    await userRef.add({
+    await userRef.doc(phone).set({
       phone,
       first_name,
       last_name,
       email,
-      password, // Consider hashing passwords before saving
+      password,
     });
 
     res.status(201).json({ message: 'User registered successfully' });
@@ -40,18 +40,17 @@ app.post('/api/register', async (req, res) => {
 });
 
 app.post('/api/login', async (req, res) => {
-  const { email, password } = req.body;
+  const { phone, password } = req.body;
 
   try {
-    const userRef = firestore.collection('users');
-    const userSnapshot = await userRef.where('email', '==', email).where('password', '==', password).get();
+    const userDoc = await firestore.collection('users').doc(phone).get();
 
-    if (userSnapshot.empty) {
-      return res.status(400).json({ message: 'Invalid email or password' });
+    if (!userDoc.exists || userDoc.data().password !== password) {
+      return res.status(400).json({ message: 'Invalid phone number or password' });
     }
 
-    const user = userSnapshot.docs[0].data();
-    res.json({ user: { id: userSnapshot.docs[0].id, ...user } });
+    const user = userDoc.data();
+    res.json({ user: { id: phone, ...user } });
   } catch (error) {
     console.error('Error during login:', error);
     res.status(500).json({ message: 'Server error' });
@@ -78,8 +77,7 @@ app.post('/api/add-expense', async (req, res) => {
   const { userId, name, amount, date, category } = req.body;
 
   try {
-    await firestore.collection('expenses').add({
-      userId,
+    await firestore.collection('expenses').doc(userId).set({
       name,
       amount,
       date,

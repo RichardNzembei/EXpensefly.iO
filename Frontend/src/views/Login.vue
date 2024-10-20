@@ -9,12 +9,12 @@ const { isPassVisible, togglePassword } = useTogglePassword();
 const router = useRouter();
 
 
-const email = ref("");
+const phone = ref("");
 const password = ref("");
 
 const loginUser = async () => {
   try {
-    const loginSuccess = await main.login(email.value, password.value);
+    const loginSuccess = await main.login(phone.value, password.value);
     if (loginSuccess) {
       router.push("/dashboard");
     } else {
@@ -36,8 +36,8 @@ const loginUser = async () => {
         </h3>
         <form @submit.prevent="loginUser">
           <div class="mb-4">
-            <label for="email" class="block text-gray-500 font-medium mb-2">Email</label>
-            <input v-model="email" type="text" placeholder="Enter email"
+            <label for="email" class="block text-gray-500 font-medium mb-2">Phone</label>
+            <input v-model="phone" type="text" placeholder="07*******"
               class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required />
           </div>

@@ -25,12 +25,12 @@ export const useStore = defineStore('main', {
       return response.json();
     },
 
-    async login(email, password) {
+    async login(phone, password) { 
       try {
         const response = await fetch(`${apiBaseUrl}/api/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password })
+          body: JSON.stringify({ phone, password }) 
         });
 
         if (!response.ok) {
@@ -40,7 +40,7 @@ export const useStore = defineStore('main', {
 
         const data = await response.json();
         this.user = data.user;
-        localStorage.setItem('userId', data.user.id);
+        localStorage.setItem('userId', data.user.id); 
         return true;
       } catch (error) {
         console.error('Login error:', error);
@@ -54,17 +54,26 @@ export const useStore = defineStore('main', {
         return;
       }
 
+      const userId = this.user.id; 
+
       try {
         const response = await fetch(`${apiBaseUrl}/api/add-expense`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userId: this.user.id, name, amount, date, category })
+          body: JSON.stringify({
+            userId, 
+            name,
+            amount,
+            date,
+            category
+          })
         });
 
         const result = await response.json();
 
         if (response.ok) {
           console.log('Expense added successfully:', result);
+          this.expenses.push(result);
         } else {
           console.error('Failed to add expense:', result);
         }

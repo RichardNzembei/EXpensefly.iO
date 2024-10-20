@@ -4,14 +4,14 @@ const apiBaseUrl = process.env.NODE_ENV === 'production'
   ? 'https://expensefly-io-1.onrender.com'
   : 'http://localhost:3000';
 
-export const useFetchUser = defineStore('main', {
+export const useFetchUser = defineStore('fetchUser', {
   state: () => ({
     user: null,
   }),
   actions: {
-    async fetchUserData(userId) {
+    async fetchUserData(phone) { 
       try {
-        const response = await fetch(`${apiBaseUrl}/api/user/${userId}`);
+        const response = await fetch(`${apiBaseUrl}/api/user/${phone}`);
 
         if (!response.ok) {
           const errorData = await response.json();
