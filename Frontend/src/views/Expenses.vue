@@ -51,20 +51,22 @@ const addNewExpense = async () => {
                 </div>
                 <div class="block">
                     <input v-model="date" type="date"
-                        class="rounded-lg border-2 p-1 hover:bg-slate-100 focus:ring-2 focus:ring-green-200">
+                        class="rounded-lg border-2 p-1 bg-white text-gray-700 hover:bg-slate-100 focus:ring-2 focus:ring-green-200">
                 </div>
+
                 <div class="block">
-                    <select v-model="category" class="p-2 border-1 rounded-lg text-blue-500">
-                        <option disabled value="category">category</option>
+                    <select v-model="category"
+                        class="p-2 border-2 rounded-lg bg-white text-gray-700 focus:ring-2 focus:ring-green-200">
+                        <option disabled value="">Select category</option> <!-- Placeholder -->
                         <option value="Food">Food</option>
                         <option value="Transportation">Transportation</option>
                         <option value="Utilities">Utilities</option>
-                        <option value="Black Tax">BLack Tax</option>
+                        <option value="Black Tax">Black Tax</option>
                         <option value="Shopping">Shopping</option>
                         <option value="Outings">Outings</option>
-
                     </select>
                 </div>
+
             </div>
             <div class="flex justify-center items-center">
                 <button @click="addNewExpense"
