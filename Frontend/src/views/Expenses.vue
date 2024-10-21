@@ -17,6 +17,11 @@ const category = ref('')
 const addNewExpense = async () => {
     if (date.value && amount.value && category.value && name.value) {
         await store.addExpense(name.value, amount.value, category.value, date.value);
+
+        name.value = '';
+        amount.value = '';
+        category.value = '';
+        date.value = '';
     } else {
         alert("All fields must be filled");
     }
