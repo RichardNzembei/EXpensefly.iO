@@ -51,8 +51,9 @@ const addNewExpense = async () => {
                 </div>
                 <div class="block">
                     <input v-model="date" type="date"
-                        class="rounded-lg border-2 p-1 bg-white text-gray-700 hover:bg-slate-100 focus:ring-2 focus:ring-green-200">
+                        class="rounded-lg border-2 p-2 bg-white text-gray-700 hover:bg-slate-100 focus:ring-2 focus:ring-green-200 appearance-none">
                 </div>
+
 
                 <div class="block">
                     <select v-model="category"
