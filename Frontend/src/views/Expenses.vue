@@ -15,10 +15,12 @@ const amount = ref('')
 const name = ref('')
 const category = ref('')
 const addNewExpense = async () => {
-    await store.addExpense(name.value, amount.value, category.value, date.value)
-
-
-}
+    if (date.value && amount.value && category.value && name.value) {
+        await store.addExpense(name.value, amount.value, category.value, date.value);
+    } else {
+        alert("All fields must be filled");
+    }
+};
 
 
 </script>
@@ -57,14 +59,20 @@ const addNewExpense = async () => {
                         <option value="Food">Food</option>
                         <option value="Transportation">Transportation</option>
                         <option value="Utilities">Utilities</option>
+                        <option value="Black Tax">BLack Tax</option>
+                        <option value="Shopping">Shopping</option>
+                        <option value="Outings">Outings</option>
 
                     </select>
                 </div>
             </div>
             <div class="flex justify-center items-center">
                 <button @click="addNewExpense"
-                    class="bg-green-400 rounded-lg shadow p-1 text-white hover:bg-white hover:text-green-600 mb-2">Add
-                    Expense</button>
+                    class="bg-green-400 rounded-lg shadow p-1 text-white hover:shadow-lg hover:scale-105 mb-2 transition-shadow duration-700 ease-in-out cursor-progress">
+                    Add Expense
+                </button>
+
+
             </div>
         </div>
         <h1 class="text-sky-500 text-center p-2 mt-5 underline">EXPENSES</h1>
