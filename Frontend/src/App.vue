@@ -6,21 +6,23 @@
 import { onMounted, watch } from 'vue';
 import { useStore } from '@/stores/useStore';
 import { useRouter } from 'vue-router';
+
 const store = useStore();
 const router = useRouter();
+
 onMounted(async () => {
   await store.initializeUser();
-  if (!store.userId) {
+  if (!store.user) {
     router.push('/login');
   } else {
-
-    await store.fetchUserData(store.userId);
+    await store.fetchUserData(store.user.id);
   }
 });
+
 watch(
-  () => store.userId,
-  (newUserId) => {
-    if (!newUserId) {
+  () => store.user,
+  (newUser) => {
+    if (!newUser) {
       router.push('/login');
     }
   }

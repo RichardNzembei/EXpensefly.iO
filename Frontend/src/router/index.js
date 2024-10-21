@@ -58,6 +58,9 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const store = useStore();
+  if (!store.user) {
+    store.initializeUser();
+  }
   if (!store.user && to.name !== 'login' && to.name !== 'register') {
     next({ name: 'login' });
   } else {
