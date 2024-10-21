@@ -1,12 +1,14 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import Dashboard from '@/views/Dashboard.vue'
-import Register from '@/views/Register.vue'
-import Login from '@/views/Login.vue'
-import Expenses from '@/views/Expenses.vue'
-import Savings from '@/views/Savings.vue'
-import Targets from '@/views/Targets.vue'
-import Profile from '@/views/Profile.vue'
-import { useStore } from '@/stores/useStore'
+import { createRouter, createWebHistory } from 'vue-router';
+import Dashboard from '@/views/Dashboard.vue';
+import Register from '@/views/Register.vue';
+import Login from '@/views/Login.vue';
+import Expenses from '@/views/Expenses.vue';
+import Savings from '@/views/Savings.vue';
+import Targets from '@/views/Targets.vue';
+import Profile from '@/views/Profile.vue';
+import NotFound from '@/views/NotFound.vue';
+import { useStore } from '@/stores/useStore';
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -44,10 +46,15 @@ const router = createRouter({
       path: '/profile',
       name: 'profile',
       component: Profile
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'NotFound',
+      component: NotFound
     }
   ]
+});
 
-})
 
 router.beforeEach((to, from, next) => {
   const store = useStore();
@@ -57,4 +64,5 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
-export default router
+
+export default router;
