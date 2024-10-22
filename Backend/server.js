@@ -102,9 +102,9 @@ app.get('/api/expenses/:userId', async (req, res) => {
   try {
     console.log(`Received request to fetch expenses for userId: ${userId}`);
 
-
+    // Fetch expenses sub-collection from Firestore
     const expenseSnapshot = await firestore.collection('users').doc(userId).collection('expenses').get();
-
+    
     console.log(`Query executed for userId: ${userId}`);
 
     if (expenseSnapshot.empty) {
@@ -112,9 +112,9 @@ app.get('/api/expenses/:userId', async (req, res) => {
       return res.status(200).json([]);
     }
 
-
+    // Map the fetched expenses into an array
     const expenses = expenseSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
+    
     console.log(`Expenses fetched for userId ${userId}:`, expenses);
 
     res.status(200).json(expenses);
