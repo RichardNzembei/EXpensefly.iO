@@ -33,7 +33,7 @@ const loginUser = async () => {
 <template>
   <div class="min-h-screen flex justify-center items-center bg-gradient-to-l from-green-200 to-green-800">
     <div v-if="loading" class="absolute inset-0 flex items-center justify-center z-50 bg-gray-100 bg-opacity-75">
-      <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+      <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-green-500 border-solid"></div>
     </div>
     <div class="container max-w-md w-full mx-auto px-3">
       <div class="bg-white p-8 rounded-lg shadow-lg">
