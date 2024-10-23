@@ -25,7 +25,7 @@ const loginUser = async () => {
     console.error("Error during login:", error);
     alert("An error occurred during login.");
   } finally {
-    loading.value = false; 
+    loading.value = false;
   }
 };
 </script>
