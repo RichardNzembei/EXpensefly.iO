@@ -64,7 +64,7 @@ import footerBar from '@/components/footerBar.vue';
       <div class="text-blue-300 block hover:text-blue-600">
         <img src="../assets/icons/creative-education.png" alt="expenses image"
           class="h-10 w-10 rounded-xl shadow-xl ml-4" />
-        <router-link to="/expenses">Monocomy</router-link>
+        <router-link to="/monocomy">Monocomy</router-link>
       </div>
       <div class="text-blue-300 block hover:text-blue-600">
         <img src="../assets/icons/expenses.png" alt="targets image" class="h-10 w-10 rounded-xl shadow-xl" />

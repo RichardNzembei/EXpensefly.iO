@@ -8,6 +8,7 @@ import Targets from '@/views/Targets.vue';
 import Profile from '@/views/Profile.vue';
 import NotFound from '@/views/NotFound.vue';
 import { useStore } from '@/stores/useStore';
+import Monocomy from '@/views/Monocomy.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -46,6 +47,11 @@ const router = createRouter({
       path: '/profile',
       name: 'profile',
       component: Profile
+    },
+    {
+      path: '/monocomy',
+      name: 'monocomy',
+      component: Monocomy
     },
     {
       path: '/:pathMatch(.*)*',
