@@ -14,6 +14,10 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: '/',
+      redirect: '/login'
+    },
+    {
       path: '/dashboard',
       name: 'dashboard',
       component: Dashboard
@@ -54,24 +58,20 @@ const router = createRouter({
       component: Monocomy
     },
     {
-      path: '/:pathMatch(.*)*',
-      name: 'NotFound',
+      path: '/:catchAll(.*)', // Handle all unmatched routes
+      name: 'not-found',
       component: NotFound
     }
   ]
 });
 
-
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const store = useStore();
-  if (!store.user) {
-    store.initializeUser();
-  }
+  await store.initializeUser(); // If the user is not logged in and trying to access protected routes
   if (!store.user && to.name !== 'login' && to.name !== 'register') {
     next({ name: 'login' });
   } else {
     next();
   }
 });
-
 export default router;
