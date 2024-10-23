@@ -8,11 +8,12 @@ const main = useStore();
 const { isPassVisible, togglePassword } = useTogglePassword();
 const router = useRouter();
 
-
 const phone = ref("");
 const password = ref("");
+const loading = ref(false);
 
 const loginUser = async () => {
+  loading.value = true;
   try {
     const loginSuccess = await main.login(phone.value, password.value);
     if (loginSuccess) {
@@ -23,12 +24,17 @@ const loginUser = async () => {
   } catch (error) {
     console.error("Error during login:", error);
     alert("An error occurred during login.");
+  } finally {
+    loading.value = false; 
   }
 };
 </script>
 
 <template>
   <div class="min-h-screen flex justify-center items-center bg-gradient-to-l from-green-200 to-green-800">
+    <div v-if="loading" class="absolute inset-0 flex items-center justify-center z-50 bg-gray-100 bg-opacity-75">
+      <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+    </div>
     <div class="container max-w-md w-full mx-auto px-3">
       <div class="bg-white p-8 rounded-lg shadow-lg">
         <h3 class="text-center font-bold text-sky-600 mb-3 max-w-full text-2xl border-b-2 p-3">
@@ -36,7 +42,7 @@ const loginUser = async () => {
         </h3>
         <form @submit.prevent="loginUser">
           <div class="mb-4">
-            <label for="email" class="block text-gray-500 font-medium mb-2">Phone</label>
+            <label for="phone" class="block text-gray-500 font-medium mb-2">Phone</label>
             <input v-model="phone" type="text" placeholder="07*******"
               class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required />
@@ -52,8 +58,10 @@ const loginUser = async () => {
           </div>
           <div>
             <button type="submit"
-              class="bg-blue-300 rounded-lg p-1 w-full text-white hover:bg-slate-200 hover:text-blue-500">
-              Login
+              class="bg-blue-300 rounded-lg p-1 w-full text-white hover:bg-slate-200 hover:text-blue-500"
+              :disabled="loading">
+              <span v-if="loading">Loading...</span>
+              <span v-else>Login</span>
             </button>
           </div>
         </form>
