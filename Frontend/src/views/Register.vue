@@ -9,6 +9,7 @@ const main = useStore();
 const router = useRouter();
 
 
+
 const { isPassVisible, togglePassword } = useTogglePassword();
 
 
@@ -42,7 +43,7 @@ async function registerUser() {
         <form @submit.prevent="registerUser">
           <div class="mb-6">
             <label for="phone" class="block mt-4 mb-2">Phone No</label>
-            <input v-model="phone" type="text" placeholder="Enter your phone number" required
+            <input v-model="phone" v-numeric-only type="text" placeholder="Enter your phone number" required
               class="w-full p-2 border rounded-md" />
 
             <label for="first_name" class="block mt-4 mb-2">First Name</label>
@@ -66,7 +67,7 @@ async function registerUser() {
               </span>
             </div>
 
-           
+
             <div>
               <button type="submit"
                 class="bg-blue-300 rounded-lg p-1 w-full text-white hover:bg-slate-200 hover:text-blue-500">

@@ -43,7 +43,7 @@ const loginUser = async () => {
         <form @submit.prevent="loginUser">
           <div class="mb-4">
             <label for="phone" class="block text-gray-500 font-medium mb-2">Phone</label>
-            <input v-model="phone" type="text" placeholder="07*******"
+            <input v-model="phone" v-numeric-only type="text" placeholder="07*******"
               class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required />
           </div>
