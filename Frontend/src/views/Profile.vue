@@ -4,6 +4,12 @@ import { useRouter } from "vue-router";
 import { useFetchUser } from "@/stores/fetchUser";
 import { useUserStore } from "@/stores/userStore";
 import navigationBar from "@/components/navigationBar.vue";
+import info from "@/components/info.vue";
+const showAbout = ref(false);
+
+const toggleAbout = () => {
+  showAbout.value = !showAbout.value; 
+};
 
 const router = useRouter();
 const fetchUserStore = useFetchUser();
@@ -79,8 +85,55 @@ const handleLogout = () => {
             <img src="../assets/icons/log-out.png" alt="log out image" class="h-12">
             <span class="mt-3 hover:text-sky-300">LOG OUT</span>
           </div>
+          <div @click="toggleAbout" class="flex space-x-2 cursor-pointer">
+            <img src="../assets/icons/info.png" alt="info icon" class="h-12">
+            <span class="mt-3 hover:text-sky-300">INFO</span>
+          </div>
         </div>
+     
       </div>
     </div>
   </div>
+  <transition name="slide-up">
+    <div v-if="showAbout" class="about-overlay">
+      <info />
+      <button @click="toggleAbout" class="close-button">Close</button>
+    </div>
+  </transition>
 </template>
+<style scoped>
+.about-overlay {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50vh;
+  background: #f9fafb;
+  padding: 20px;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  overflow-y: auto;
+  z-index: 50;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Slide-up transition */
+.slide-up-enter-active, .slide-up-leave-active {
+  transition: transform 0.3s ease;
+}
+.slide-up-enter, .slide-up-leave-to {
+  transform: translateY(100%);
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 1.2em;
+  color: #1e991e;
+  cursor: pointer;
+}
+</style>
