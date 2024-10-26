@@ -1,39 +1,42 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
-import { useFetchUser } from "@/stores/useFetchUser";
+import { useFetchUser } from "@/stores/fetchUser";
+import { useUserStore } from "@/stores/userStore";
 import navigationBar from "@/components/navigationBar.vue";
-import { useStore } from "@/stores/useStore";
 
 const router = useRouter();
-const store = useFetchUser();
-const main = useStore()
-onMounted(() => {
-  store.initializeUser();
-});
-const toHomePage = () => {
-  router.push('/dashboard');
-};
+const fetchUserStore = useFetchUser();
+const userStore = useUserStore();
 
-const userId = computed(() => store.user?.id || localStorage.getItem('userId'));
-const user = computed(() => store.user);
+onMounted(() => {
+  userStore.initializeUser();
+});
+
+const userId = computed(() => userStore.user?.id || localStorage.getItem('userId'));
+const user = computed(() => userStore.user);
 
 const fullName = computed(() => {
   return user.value ? `${user.value.first_name.toUpperCase()} ${user.value.last_name.toUpperCase()}` : '';
 });
+
 const phoneNo = computed(() => {
   return user.value ? `254${user.value.phone.slice(1)}` : '';
 });
+
 const handleLogout = () => {
-  main.logout();
+  userStore.logout();
   router.push('/login');
 };
 </script>
 
+
 <template>
   <navigationBar />
   <span>
-    <img src="../assets/icons/thin-arrow.png" alt="" class="h-8 w-8 ml-5" @click="toHomePage">
+    <RouterLink to="/dashboard">
+      <img src="../assets/icons/thin-arrow.png" alt="" class="h-8 w-8 ml-5">
+    </RouterLink>
   </span>
   <div class="min-h-screen flex justify-center items-center">
     <div class="container max-w-md w-full mx-auto px-3">

@@ -7,7 +7,7 @@ import Savings from '@/views/Savings.vue';
 import Targets from '@/views/Targets.vue';
 import Profile from '@/views/Profile.vue';
 import NotFound from '@/views/NotFound.vue';
-import { useStore } from '@/stores/useStore';
+import { useUserStore } from '@/stores/userStore';
 import Monocomy from '@/views/Monocomy.vue';
 
 const router = createRouter({
@@ -58,7 +58,7 @@ const router = createRouter({
       component: Monocomy
     },
     {
-      path: '/:catchAll(.*)', // Handle all unmatched routes
+      path: '/:catchAll(.*)',
       name: 'not-found',
       component: NotFound
     }
@@ -66,9 +66,9 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
-  const store = useStore();
-  await store.initializeUser(); // If the user is not logged in and trying to access protected routes
-  if (!store.user && to.name !== 'login' && to.name !== 'register') {
+  const userStore = useUserStore();
+  await userStore.initializeUser();
+  if (!userStore.user && to.name !== 'login' && to.name !== 'register') {
     next({ name: 'login' });
   } else {
     next();

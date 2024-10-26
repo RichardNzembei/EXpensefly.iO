@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, computed } from 'vue';
-import { useFetchUser } from '@/stores/useFetchUser';
+import { useFetchUser } from '@/stores/fetchUser';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -14,18 +14,18 @@ const vTooltip = {
     const span = document.createElement('span');
     span.textContent = binding.value;
     span.className = 'tooltip-text';
-    
+
     span.style.position = 'absolute';
     span.style.backgroundColor = 'white';
     span.style.color = 'blue';
     span.style.padding = '5px';
     span.style.borderRadius = '4px';
     span.style.whiteSpace = 'nowrap';
-    span.style.display = 'none'; 
+    span.style.display = 'none';
     span.style.zIndex = '1000';
-    span.style.marginTop='30px';
+    span.style.marginTop = '30px';
 
-    el.style.position = 'relative'; 
+    el.style.position = 'relative';
     el.appendChild(span);
 
     el.onmouseenter = () => {
@@ -48,11 +48,6 @@ onMounted(async () => {
     }
   }
 });
-
-const toProfilePage = () => {
-  router.push('/profile');
-};
-
 const fName = computed(() => {
   return user.value ? user.value.first_name.charAt(0).toUpperCase() + user.value.first_name.slice(1) : '';
 });
@@ -63,11 +58,12 @@ const fName = computed(() => {
     <h1 class="font-sans lg:text-3xl text-green-600 hover:text-green-800 transition duration-300 text-xl">
       EXpensefly.iO
     </h1>
-    <p class="flex space-x-2" @click="toProfilePage" v-tooltip="'my account'">
-      <img src="../assets/img/profile.png" alt="profile image" class="rounded-xl shadow-lg" />
-      <span class="mt-2 text-mono text-medium">Hello,,<strong>{{ fName }}😊</strong></span>
+    <RouterLink to="/profile">
+      <p class="flex space-x-2" v-tooltip="'view profile'">
+        <img src="../assets/img/profile.png" alt="profile image" class="rounded-xl shadow-lg" />
+        <span class="mt-2 text-mono text-medium">Hello,,<strong>{{ fName }}😊</strong></span>
 
-    </p>
-
+      </p>
+    </RouterLink>
   </div>
 </template>

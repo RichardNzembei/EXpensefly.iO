@@ -5,11 +5,11 @@ import { PieChart } from 'echarts/charts';
 import { TitleComponent, TooltipComponent, LegendComponent } from 'echarts/components';
 import { CanvasRenderer } from 'echarts/renderers';
 import VChart from 'vue-echarts';
-import { useStore } from '@/stores/useStore';
+import { useExpensesStore } from '@/stores/expensesStore';
 
 use([TitleComponent, TooltipComponent, LegendComponent, PieChart, CanvasRenderer]);
 
-const store = useStore();
+const store = useExpensesStore();
 
 const chartOptions = ref({
   title: {
@@ -37,7 +37,6 @@ const chartOptions = ref({
   ],
 });
 
-
 const calculateTotals = (expenses) => {
   return expenses.reduce((acc, expense) => {
     const category = expense.category;
@@ -56,6 +55,7 @@ const calculateTotals = (expenses) => {
     return acc;
   }, {});
 };
+
 const setResponsiveRadius = () => {
   const screenWidth = window.innerWidth;
 
@@ -67,7 +67,6 @@ const setResponsiveRadius = () => {
     return ['70%'];
   }
 };
-
 
 const handleResize = () => {
   const chartInstance = document.querySelector('v-chart');
@@ -94,10 +93,12 @@ onMounted(async () => {
   window.addEventListener('resize', handleResize);
   handleResize();
 });
+
 onBeforeUnmount(() => {
   window.removeEventListener('resize', handleResize);
 });
 </script>
+
 
 <template>
   <div class="flex justify-center items-center w-full h-96 sm:h-96 md:h-128 lg:h-[400px] xl:h-[500px] mt-10">

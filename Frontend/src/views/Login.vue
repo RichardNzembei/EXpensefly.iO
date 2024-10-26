@@ -2,9 +2,9 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useTogglePassword } from "@/composables/toggle";
-import { useStore } from "@/stores/useStore";
+import { useUserStore } from "@/stores/userStore";
 
-const main = useStore();
+const userStore = useUserStore();
 const { isPassVisible, togglePassword } = useTogglePassword();
 const router = useRouter();
 
@@ -15,7 +15,7 @@ const loading = ref(false);
 const loginUser = async () => {
   loading.value = true;
   try {
-    const loginSuccess = await main.login(phone.value, password.value);
+    const loginSuccess = await userStore.login(phone.value, password.value);
     if (loginSuccess) {
       router.push("/dashboard");
     } else {
@@ -29,6 +29,7 @@ const loginUser = async () => {
   }
 };
 </script>
+
 
 <template>
   <div class="min-h-screen flex justify-center items-center bg-gradient-to-l from-green-200 to-green-800">

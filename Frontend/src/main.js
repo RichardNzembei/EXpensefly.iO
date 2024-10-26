@@ -1,28 +1,30 @@
-import './assets/css/tailwind.css'
+import './assets/css/tailwind.css';
 
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
 
-import App from './App.vue'
-import router from './router'
-import { useStore } from '@/stores/useStore'
-const app = createApp(App)
-const pinia = createPinia()
+import App from './App.vue';
+import router from './router';
+import { useUserStore } from '@/stores/userStore';
+
+const app = createApp(App);
+const pinia = createPinia();
+
 const numericOnly = {
     mounted(el) {
-        el.addEventListener('input', () => {
+        el.addEventListener('input', (event) => {
+            const originalValue = el.value;
+
             el.value = el.value.replace(/[^0-9]/g, '');
-            el.dispatchEvent(new Event('input'));
+            if (el.value !== originalValue) {
+                el.dispatchEvent(new Event('input'));
+            }
         });
     }
 };
-
-
 app.directive('numeric-only', numericOnly);
-app.use(pinia)
-app.use(router)
-
-const store = useStore();
-store.initializeUser();
-
-app.mount('#app')
+app.use(pinia);
+app.use(router);
+const userStore = useUserStore();
+userStore.initializeUser();
+app.mount('#app');

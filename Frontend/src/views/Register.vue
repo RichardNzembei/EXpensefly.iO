@@ -2,16 +2,12 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useTogglePassword } from "@/composables/toggle";
-import { useStore } from "@/stores/useStore";
+import { useUserStore } from "@/stores/userStore";
 
-
-const main = useStore();
+const userStore = useUserStore();
 const router = useRouter();
 
-
-
 const { isPassVisible, togglePassword } = useTogglePassword();
-
 
 const phone = ref("");
 const first_name = ref("");
@@ -21,16 +17,15 @@ const password = ref("");
 
 async function registerUser() {
   try {
-    const response = await main.register(phone.value, first_name.value, last_name.value, email.value, password.value);
+    const response = await userStore.register(phone.value, first_name.value, last_name.value, email.value, password.value);
     if (response) {
       router.push("/login");
     }
   } catch (error) {
     console.error("Registration failed:", error);
-    alert(error.message || "An error occurred during registration."); // Alert the user
+    alert(error.message || "An error occurred during registration.");
   }
 }
-
 </script>
 
 <template>

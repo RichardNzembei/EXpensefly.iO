@@ -45,15 +45,15 @@ import footerBar from '@/components/footerBar.vue';
     </h2>
     <div class="container mx-auto mt-8 bg-white  flex justify-center items-center space-x-6 p-4">
       <div class="text-blue-300 block hover:text-blue-600">
-        <img src="../assets/icons/expenses (1).png" alt="expenses image" class="h-10 w-10 rounded-xl shadow-xl" />
+        <img src="../assets/icons/expenses (1).png" alt="expenses image" class="h-10 w-10 rounded-xl shadow-xl ml-3" />
         <router-link to="/expenses">Expenses</router-link>
       </div>
       <div class="text-blue-300 block hover:text-blue-600">
-        <img src="../assets/icons/goal.png" alt="targets image" class="h-10 w-10 rounded-xl shadow-xl" />
+        <img src="../assets/icons/goal.png" alt="targets image" class="h-10 w-10 rounded-xl shadow-xl ml-1" />
         <router-link to="/targets">Targets</router-link>
       </div>
       <div class="text-blue-300 block hover:text-blue-600">
-        <img src="../assets/icons/money-box.png" alt="targets image" class="h-10 w-10 rounded-xl shadow-xl" />
+        <img src="../assets/icons/money-box.png" alt="targets image" class="h-10 w-10 rounded-xl shadow-xl ml-1" />
         <router-link to="/savings">Savings</router-link>
       </div>
     </div>
@@ -71,7 +71,7 @@ import footerBar from '@/components/footerBar.vue';
         <router-link to="/expenses">SMMEs</router-link>
       </div>
       <div class="text-blue-300 block hover:text-blue-600">
-        <img src="../assets/icons/income.png" alt="targets image" class="h-10 w-10 rounded-xl shadow-xl" />
+        <img src="../assets/icons/income.png" alt="targets image" class="h-10 w-10 rounded-xl shadow-xl ml-1" />
         <router-link to="/expenses">crypto</router-link>
       </div>
     </div>

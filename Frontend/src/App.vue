@@ -1,25 +1,28 @@
-// App.vue
 <script setup>
 import { onMounted, watch } from 'vue';
-import { useStore } from '@/stores/useStore';
-import { useFetchUser } from '@/stores/useFetchUser';
+import { useUserStore } from '@/stores/userStore';
+import { useFetchUser } from './stores/fetchUser'; 
+import { useExpensesStore } from '@/stores/expensesStore';
 import { useRouter } from 'vue-router';
 
-const store = useStore();
+const userStore = useUserStore();
 const fetchUserStore = useFetchUser();
+const expensesStore = useExpensesStore();
 const router = useRouter();
 
 onMounted(async () => {
-  await store.initializeUser();
-  if (!store.user) {
+  await userStore.initializeUser();
+  if (!userStore.user) {
     router.push('/login');
   } else {
-    await fetchUserStore.fetchUserData(store.user.id);
+    await fetchUserStore.fetchUserData(userStore.user.id);
+    await expensesStore.fetchExpenses();
   }
 });
 
+
 watch(
-  () => store.user,
+  () => userStore.user,
   (newUser) => {
     if (!newUser) {
       router.push('/login');
@@ -28,7 +31,7 @@ watch(
 );
 </script>
 
-Copy code
+
 <template>
   <RouterView />
 </template>

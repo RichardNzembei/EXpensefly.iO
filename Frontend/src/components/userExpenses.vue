@@ -1,7 +1,7 @@
 <script setup>
 import { computed, onMounted } from 'vue';
-import { useStore } from '@/stores/useStore';
-const store = useStore();
+import { useExpensesStore } from '@/stores/expensesStore';
+const store = useExpensesStore();
 const expenses = computed(() => store.expenses);
 
 console.log('Current expenses:', expenses.value);
@@ -19,7 +19,7 @@ onMounted(async () => {
             <ul class="divide-y divide-gray-200">
                 <li v-for="expense in expenses" :key="expense.id" class="py-3 flex justify-between items-center">
                     <span class="text-gray-600">{{ expense.name }}</span>
-                    <span class="font-bold text-gray-800">{{ expense.amount}} ksh</span>
+                    <span class="font-bold text-gray-800">{{ expense.amount }} ksh</span>
                 </li>
             </ul>
         </div>
