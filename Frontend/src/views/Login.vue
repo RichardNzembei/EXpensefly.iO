@@ -39,7 +39,7 @@ const loginUser = async () => {
     <div class="container max-w-md w-full mx-auto px-3">
       <div class="bg-white p-8 rounded-lg shadow-lg">
         <h3 class="text-center font-bold text-sky-600 mb-3 max-w-full text-2xl border-b-2 p-3">
-          Sign In Page
+          Sign In
         </h3>
         <form @submit.prevent="loginUser">
           <div class="mb-4">
