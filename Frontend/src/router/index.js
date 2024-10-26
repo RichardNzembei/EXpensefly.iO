@@ -9,6 +9,8 @@ import Profile from '@/views/Profile.vue';
 import NotFound from '@/views/NotFound.vue';
 import { useUserStore } from '@/stores/userStore';
 import Monocomy from '@/views/Monocomy.vue';
+import Smmes from '@/views/Smmes.vue';
+import Crypto from '@/views/Crypto.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -46,6 +48,16 @@ const router = createRouter({
       path: '/targets',
       name: 'targets',
       component: Targets
+    },
+    {
+      path: '/smmes',
+      name: 'smmes',
+      component: Smmes
+    },
+    {
+      path: '/crypto',
+      name: 'crypto',
+      component: Crypto
     },
     {
       path: '/profile',

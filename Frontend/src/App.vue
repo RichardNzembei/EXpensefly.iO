@@ -4,6 +4,10 @@ import { useUserStore } from '@/stores/userStore';
 import { useFetchUser } from './stores/fetchUser'; 
 import { useExpensesStore } from '@/stores/expensesStore';
 import { useRouter } from 'vue-router';
+import { useTargetStore } from '@/stores/targetStore';
+
+const targetStore = useTargetStore();
+
 
 const userStore = useUserStore();
 const fetchUserStore = useFetchUser();
@@ -17,6 +21,7 @@ onMounted(async () => {
   } else {
     await fetchUserStore.fetchUserData(userStore.user.id);
     await expensesStore.fetchExpenses();
+    await targetStore.fetchTargets();
   }
 });
 

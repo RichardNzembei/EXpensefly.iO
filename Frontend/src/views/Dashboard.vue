@@ -68,11 +68,11 @@ import footerBar from '@/components/footerBar.vue';
       </div>
       <div class="text-blue-300 block hover:text-blue-600">
         <img src="../assets/icons/expenses.png" alt="targets image" class="h-10 w-10 rounded-xl shadow-xl" />
-        <router-link to="/expenses">SMMEs</router-link>
+        <router-link to="/smmes">SMMEs</router-link>
       </div>
       <div class="text-blue-300 block hover:text-blue-600">
         <img src="../assets/icons/income.png" alt="targets image" class="h-10 w-10 rounded-xl shadow-xl ml-1" />
-        <router-link to="/expenses">crypto</router-link>
+        <router-link to="/crypto">crypto</router-link>
       </div>
     </div>
   </div>

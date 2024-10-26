@@ -1,7 +1,7 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
-import { useTargetStore } from '@/stores/targetStore';
+import { ref, computed } from 'vue';
 import navigationBar from '@/components/navigationBar.vue';
+import { useTargetStore } from '@/stores/targetStore';
 
 const targetStore = useTargetStore();
 const targetDescription = ref('');
@@ -9,15 +9,14 @@ const targetAmount = ref('');
 const targetDeadline = ref('');
 const activeTargets = computed(() => targetStore.activeTargets);
 const completedTargets = computed(() => targetStore.completedTargets);
-onMounted(async () => {
-    await targetStore.fetchTargets();
-});
+
 const handleFormSubmit = async () => {
     await targetStore.addTarget(targetDescription.value, targetAmount.value, targetDeadline.value);
     targetDescription.value = '';
     targetAmount.value = '';
     targetDeadline.value = '';
 };
+
 const markAsCompleted = async (index) => {
     const target = activeTargets.value[index];
     await targetStore.markTargetAsCompleted(target.id);
