@@ -96,27 +96,18 @@ const handleLogout = () => {
   </div>
   <transition name="slide-up">
     <div v-if="showAbout" class="about-overlay">
-      <info />
+      <!-- Fixed close button -->
       <button @click="toggleAbout" class="close-button">Close</button>
+      
+      <!-- Scrollable info section -->
+      <div class="info-scrollable">
+        <info />
+      </div>
     </div>
   </transition>
-</template>
+  </template>
 <style scoped>
-.about-overlay {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 50vh;
-  background: #f9fafb;
-  padding: 20px;
-  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  overflow-y: auto;
-  z-index: 50;
-  transition: transform 0.3s ease-in-out;
-}
+
 
 /* Slide-up transition */
 .slide-up-enter-active, .slide-up-leave-active {
@@ -126,14 +117,40 @@ const handleLogout = () => {
   transform: translateY(100%);
 }
 
+
+.about-overlay {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50vh;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  z-index: 100;
+}
+
+/* Fixed close button styling */
 .close-button {
   position: absolute;
-  top: 10px;
-  right: 20px;
-  background: none;
+  top: 1rem;
+  right: 1rem;
+  
+  color:green;
   border: none;
-  font-size: 1.2em;
-  color: #1e991e;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
   cursor: pointer;
+  z-index: 101;
+}
+
+/* Scrollable info section */
+.info-scrollable {
+  max-height: calc(50vh - 3rem); /* Adjust for button space */
+  overflow-y: auto;
+  padding: 1rem;
+  margin-top: 50px; /* Space below the button */
 }
 </style>
