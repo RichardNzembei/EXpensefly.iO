@@ -7,6 +7,7 @@ const targetStore = useTargetStore();
 const targetDescription = ref('');
 const targetAmount = ref('');
 const targetDeadline = ref('');
+const progress=ref(0)
 const activeTargets = computed(() => targetStore.activeTargets);
 const completedTargets = computed(() => targetStore.completedTargets);
 
@@ -81,7 +82,7 @@ const markAsCompleted = async (index) => {
                     <h3 class="text-lg font-bold text-gray-800">{{ target.description }}</h3>
                     <p class="text-sm text-gray-600">Goal: ksh{{ target.amount }} | Deadline: {{ target.deadline }}</p>
                     <div class="w-full bg-gray-200 rounded-full h-2 mt-2">
-                        <div class="bg-blue-600 h-2 rounded-full" :style="{ width: target.progress + '%' }"></div>
+                        <div class="bg-green-300 h-2 rounded-full" :style="{ width: target.progress + '%' }"></div>
                     </div>
                     <div class="flex justify-between items-center mt-3">
                         <span class="text-gray-500 text-sm">Progress: {{ target.progress }}%</span>
