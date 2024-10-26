@@ -31,12 +31,12 @@ const addNewExpense = async () => {
 </script>
 <template>
     <navigationBar />
-    <div class=" min-h-screen w-full max-w-full">
+    <div class=" min-h-screen w-full max-w-full text-md lg:text-lg">
         <span class="inline">
             <RouterLink to="/dashboard">
                 <img src="../assets/icons/thin-arrow.png" alt="home image" class="h-8 w-8 mt-2 ml-2">
             </RouterLink>
-            <h4 class="text-center font-thin font-serif text-2xl text-gray-600">Welcome to the seamless money Tracker
+            <h4 class="text-center font-thin font-serif text-xl lg:text-2xl text-gray-600">Welcome to the seamless money Tracker
             </h4>
         </span>
         <p class="text-san text-pretty text-lime-700 p-2 ml-5 text-center">Let's make your transactions easy and

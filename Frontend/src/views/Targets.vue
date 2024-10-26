@@ -30,9 +30,9 @@ const markAsCompleted = async (index) => {
             <img src="../assets/icons/thin-arrow.png" alt="" class="h-8 w-8 ml-5">
         </RouterLink>
     </span>
-    <section class="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg space-y-8">
+    <section class="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg space-y-8 text-md lg:text-lg">
         <div class="text-center">
-            <h1 class="text-3xl font-semibold text-green-600 mb-2">Financial Targets</h1>
+            <h1 class=" font-semibold text-green-600 mb-2 text-lg lg:text-3xl">Financial Targets</h1>
             <p class="text-gray-600">
                 Set financial goals, track progress, and stay motivated to reach them.
             </p>
@@ -74,8 +74,8 @@ const markAsCompleted = async (index) => {
             </button>
         </form>
 
-        <section class="mt-8">
-            <h2 class="text-2xl font-semibold text-slate-700 mb-4 text-center font-mono">Undone Targets</h2>
+        <section class="mt-8 text-md">
+            <h2 class=" font-semibold text-slate-700 mb-4 text-center font-mono text-xl">Undone Targets</h2>
             <div v-if="activeTargets.length > 0" class="space-y-4">
                 <div v-for="(target, index) in activeTargets" :key="target.id"
                     class="p-4 border border-gray-200 rounded-md bg-gray-50">
@@ -96,8 +96,8 @@ const markAsCompleted = async (index) => {
             <p v-else class="text-gray-500">No active targets. Set a new target to get started!</p>
         </section>
 
-        <section class="mt-8">
-            <h2 class="text-2xl font-semibold text-slate-700 mb-4 text-center font-mono">Done Targets</h2>
+        <section class="mt-8 text-md">
+            <h2 class="text-xl font-semibold text-slate-700 mb-4 text-center font-mono">Done Targets</h2>
             <div v-if="completedTargets.length > 0" class="space-y-4">
                 <div v-for="target in completedTargets" :key="target.id"
                     class="p-4 border border-green-200 rounded-md bg-green-50">

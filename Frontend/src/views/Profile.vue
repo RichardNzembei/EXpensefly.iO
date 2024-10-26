@@ -38,10 +38,10 @@ const handleLogout = () => {
       <img src="../assets/icons/thin-arrow.png" alt="" class="h-8 w-8 ml-5">
     </RouterLink>
   </span>
-  <div class="min-h-screen flex justify-center items-center">
-    <div class="container max-w-md w-full mx-auto px-3">
+  <div class="min-h-screen flex justify-center  text-md">
+    <div class="max-w-md w-full mx-auto px-3">
       <h2 class="text-center text-slate-500 text-2xl">ACCOUNT</h2>
-      <div class="shadow-lg rounded-lg p-5 ">
+      <div class="shadow-xl rounded-lg p-5 ">
         <div>
           <p class="flex space-x-2 m-auto">
             <img src="../assets/img/profile.png" alt="profile image" class="h-14 w-14 rounded-xl shadow-xl" />
@@ -49,18 +49,18 @@ const handleLogout = () => {
           </p>
           <span class="ml-14 text-bold">{{ fullName }}</span>
         </div>
-        <div class="flex bg-white space-x-2 mt-10">
+        <div class="flex bg-white space-x-2 mt-10 ">
           <p class="block">
             <img src="../assets/img/expenses.jpg" alt="expenses image" class="rounded-xl shadow-xl h-20">
-            <span class="ml-6 text-sky-500">Expenses</span>
+            <span class="ml-6 text-sky-500 hover:underline">Expenses</span>
           </p>
           <p>
             <img src="../assets/img/savings.jpg" alt="savings image" class="rounded-xl shadow-xl h-20">
-            <span class="ml-6 text-sky-500">Savings</span>
+            <span class="ml-6 text-sky-500 hover:underline">Savings</span>
           </p>
           <p>
             <img src="../assets/img/targets.jpg" alt="targets image" class="rounded-xl shadow-xl h-20">
-            <span class="ml-6 text-sky-500">Targets</span>
+            <span class="ml-6 text-sky-500 hover:underline">Targets</span>
           </p>
         </div>
         <div class="space-y-4">

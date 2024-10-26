@@ -5,9 +5,9 @@ import footerBar from '@/components/footerBar.vue';
 <template>
   <div class="bg-gray-50 min-h-screen flex flex-col">
     <navigationBar />
-    <div class="mx-auto mt-8 flex flex-col md:flex-row space-y-2 md:space-x-4 p-2 border-b-4">
+    <div class="mx-auto mt-8 flex flex-col md:flex-row space-y-2 md:space-x-4 p-2 border-b-4 text-sm lg:text-lg">
       <div class="bg-slate-100 w-full md:w-1/3 rounded-lg p-4 shadow-md">
-        <h2 class="text-center text-lg font-semibold text-green-400">
+        <h2 class="text-center text-md font-semibold text-green-500">
           Why Track Your Expenses?
         </h2>
         <ul class="mt-2 space-y-2 text-gray-700 list-disc list-inside">
@@ -19,7 +19,7 @@ import footerBar from '@/components/footerBar.vue';
       </div>
 
       <div class="bg-slate-100 w-full md:w-1/3 rounded-lg p-4 shadow-md">
-        <h2 class="text-lg font-semibold text-green-400">Why Save Money?</h2>
+        <h2 class="text-md text-center font-semibold text-green-500">Why Save Money?</h2>
         <ul class="mt-2 space-y-2 text-gray-700 list-disc list-inside">
           <li>Provides financial security</li>
           <li>Achieve your long-term goals</li>
@@ -29,7 +29,7 @@ import footerBar from '@/components/footerBar.vue';
       </div>
 
       <div class="bg-slate-100 w-full md:w-1/3 rounded-lg p-4 shadow-md">
-        <h2 class="text-lg font-semibold text-green-400">
+        <h2 class="text-md text-center font-semibold text-green-500">
           Why Set Financial Targets?
         </h2>
         <ul class="mt-2 space-y-2 text-gray-700 list-disc list-inside">

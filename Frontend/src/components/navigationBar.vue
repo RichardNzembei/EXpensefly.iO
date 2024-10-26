@@ -1,14 +1,16 @@
 <script setup>
 import { onMounted, computed } from 'vue';
 import { useFetchUser } from '@/stores/fetchUser';
+import { useUserStore } from '@/stores/userStore';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const store = useFetchUser();
+const userStore = useUserStore();
 
 
 const userId = computed(() => store.user?.phone || localStorage.getItem('userId'));
-const user = computed(() => store.user);
+const user = computed(() => userStore.user);
 const vTooltip = {
   mounted(el, binding) {
     const span = document.createElement('span');
@@ -16,14 +18,14 @@ const vTooltip = {
     span.className = 'tooltip-text';
 
     span.style.position = 'absolute';
-    span.style.backgroundColor = 'white';
-    span.style.color = 'blue';
+    
+    span.style.color = 'sky-blue';
     span.style.padding = '5px';
     span.style.borderRadius = '4px';
     span.style.whiteSpace = 'nowrap';
     span.style.display = 'none';
     span.style.zIndex = '1000';
-    span.style.marginTop = '30px';
+    span.style.marginTop = '40px';
 
     el.style.position = 'relative';
     el.appendChild(span);
@@ -55,7 +57,7 @@ const fName = computed(() => {
 
 <template>
   <div class="flex items-center justify-between shadow-xl rounded-lg p-4 border border-b-2 bg-white">
-    <h1 class="font-sans lg:text-3xl text-green-600 hover:text-green-800 transition duration-300 text-xl">
+    <h1 class="font-sans lg:text-3xl text-green-600 hover:text-green-800 transition duration-300 text-lg">
       EXpensefly.iO
     </h1>
     <RouterLink to="/profile">
