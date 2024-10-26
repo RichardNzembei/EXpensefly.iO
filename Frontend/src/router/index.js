@@ -11,6 +11,9 @@ import { useUserStore } from '@/stores/userStore';
 import Monocomy from '@/views/Monocomy.vue';
 import Smmes from '@/views/Smmes.vue';
 import Crypto from '@/views/Crypto.vue';
+import ExpensesSnipet from '@/components/expensesSnipet.vue';
+import TargetsSnipet from '@/components/targetsSnipet.vue';
+import SavingsSnipet from '@/components/savingsSnipet.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -68,6 +71,21 @@ const router = createRouter({
       path: '/monocomy',
       name: 'monocomy',
       component: Monocomy
+    },
+    {
+      path: '/expensessnipet',
+      name: 'expensessnipet',
+      component:ExpensesSnipet
+    },
+    {
+      path: '/targetssnipet',
+      name: 'targetssnipet',
+      component:TargetsSnipet
+    },
+    {
+      path: '/savingssnipet',
+      name: 'savingssnipet',
+      component:SavingsSnipet
     },
     {
       path: '/:catchAll(.*)',

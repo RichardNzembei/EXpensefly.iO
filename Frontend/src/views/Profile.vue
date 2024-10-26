@@ -52,15 +52,21 @@ const handleLogout = () => {
         <div class="flex bg-white space-x-2 mt-10 ">
           <p class="block">
             <img src="../assets/img/expenses.jpg" alt="expenses image" class="rounded-xl shadow-xl h-20">
+            <RouterLink to="expenses">
             <span class="ml-6 text-sky-500 hover:underline">Expenses</span>
+          </RouterLink>
           </p>
           <p>
             <img src="../assets/img/savings.jpg" alt="savings image" class="rounded-xl shadow-xl h-20">
-            <span class="ml-6 text-sky-500 hover:underline">Savings</span>
+            <RouterLink to="targets">
+              <span class="ml-6 text-sky-500 hover:underline">Savings</span>
+            </RouterLink>
           </p>
           <p>
             <img src="../assets/img/targets.jpg" alt="targets image" class="rounded-xl shadow-xl h-20">
-            <span class="ml-6 text-sky-500 hover:underline">Targets</span>
+            <RouterLink to="savings">
+              <span class="ml-6 text-sky-500 hover:underline">Targets</span>
+            </RouterLink>
           </p>
         </div>
         <div class="space-y-4">
