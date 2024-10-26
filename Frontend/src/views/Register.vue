@@ -38,7 +38,7 @@ async function registerUser() {
         <form @submit.prevent="registerUser">
           <div class="mb-6">
             <label for="phone" class="block mt-4 mb-2">Phone No</label>
-            <input v-model="phone" v-numeric-only type="text" placeholder="Enter your phone number" required
+            <input v-model="phone" v-numeric-only type="text" placeholder="07******" required
               class="w-full p-2 border rounded-md" />
 
             <label for="first_name" class="block mt-4 mb-2">First Name</label>
