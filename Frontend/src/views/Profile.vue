@@ -8,7 +8,7 @@ import info from "@/components/info.vue";
 const showAbout = ref(false);
 
 const toggleAbout = () => {
-  showAbout.value = !showAbout.value; 
+  showAbout.value = !showAbout.value;
 };
 
 const router = useRouter();
@@ -59,8 +59,8 @@ const handleLogout = () => {
           <p class="block">
             <img src="../assets/img/expenses.jpg" alt="expenses image" class="rounded-xl shadow-xl h-20">
             <RouterLink to="expenses">
-            <span class="ml-6 text-sky-500 hover:underline">Expenses</span>
-          </RouterLink>
+              <span class="ml-6 text-sky-500 hover:underline">Expenses</span>
+            </RouterLink>
           </p>
           <p>
             <img src="../assets/img/savings.jpg" alt="savings image" class="rounded-xl shadow-xl h-20">
@@ -90,33 +90,29 @@ const handleLogout = () => {
             <span class="mt-3 hover:text-sky-300">INFO</span>
           </div>
         </div>
-     
+
       </div>
     </div>
   </div>
   <transition name="slide-up">
     <div v-if="showAbout" class="about-overlay">
-      <!-- Fixed close button -->
       <button @click="toggleAbout" class="close-button">Close</button>
-      
-      <!-- Scrollable info section -->
       <div class="info-scrollable">
         <info />
       </div>
     </div>
   </transition>
-  </template>
+</template>
 <style scoped>
-
-
-/* Slide-up transition */
-.slide-up-enter-active, .slide-up-leave-active {
+.slide-up-enter-active,
+.slide-up-leave-active {
   transition: transform 0.3s ease;
 }
-.slide-up-enter, .slide-up-leave-to {
+
+.slide-up-enter,
+.slide-up-leave-to {
   transform: translateY(100%);
 }
-
 
 .about-overlay {
   position: fixed;
@@ -132,13 +128,12 @@ const handleLogout = () => {
   z-index: 100;
 }
 
-/* Fixed close button styling */
 .close-button {
   position: absolute;
   top: 1rem;
   right: 1rem;
-  
-  color:green;
+
+  color: green;
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 8px;
@@ -146,11 +141,10 @@ const handleLogout = () => {
   z-index: 101;
 }
 
-/* Scrollable info section */
 .info-scrollable {
-  max-height: calc(50vh - 3rem); /* Adjust for button space */
+  max-height: calc(50vh - 3rem);
   overflow-y: auto;
   padding: 1rem;
-  margin-top: 50px; /* Space below the button */
+  margin-top: 50px;
 }
 </style>
