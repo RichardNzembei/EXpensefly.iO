@@ -5,7 +5,7 @@
             <img src="../assets/icons/thin-arrow.png" alt="Back to Dashboard" class="h-8 w-8 ml-5" />
         </RouterLink>
     </span>
-    <div class="max-w-3xl  p-8 bg-white shadow-lg rounded-lg text-md lg:text-lg">
+    <div class="max-w-3xl mx-auto p-8 bg-white shadow-lg rounded-lg text-md lg:text-lg">
         <h1 class="font-semibold text-green-600 mb-2 text-lg lg:text-3xl text-center">My Savings</h1>
         <p class="text-gray-700 mb-6">Manage your savings efficiently. Add your savings details below.</p>
 
