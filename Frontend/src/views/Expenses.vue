@@ -49,7 +49,7 @@ const addNewExpense = async () => {
                         placeholder="expense description *hike*">
                 </div>
                 <div class="block">
-                    <input v-model="amount" v-numeric-only type="text"
+                    <input v-model="amount" v-numeric-only type="number"
                         class="rounded-lg border-2 p-1 hover:bg-slate-100 focus:ring-2 focus:ring-green-200"
                         placeholder="Enter amount">
                 </div>
