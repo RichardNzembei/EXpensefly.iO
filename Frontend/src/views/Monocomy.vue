@@ -20,11 +20,11 @@ const articles = ref([
 </script>
 <template>
     <navigationBar />
-    <div class="educational-section p-6 bg-gray-50">
+    <div class="educational-section p-6 bg-gray-50 text-sm">
         <span class="inline">
             <RouterLink to="/dashboard"> <img src="../assets/icons/thin-arrow.png" alt="home image"
                     class="h-8 w-8  ml-2"></RouterLink>
-            <h1 class="text-center text-3xl font-bold mb-8 text-slate-800">Money Mechanics</h1>
+            <h1 class="text-center text-lg lg:text-xl font-bold mb-8 text-slate-800">Money Mechanics</h1>
         </span>
         <div class="articles-container grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <articleCard v-for="article in articles" :key="article.title" :title="article.title"
