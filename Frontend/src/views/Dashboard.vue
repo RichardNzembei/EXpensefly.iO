@@ -67,11 +67,11 @@ import footerBar from '@/components/footerBar.vue';
         <router-link to="/monocomy">Monocomy</router-link>
       </div>
       <div class="text-blue-300 block hover:text-blue-600">
-        <img src="../assets/icons/expenses.png" alt="targets image" class="h-10 w-10 rounded-xl shadow-xl" />
+        <img src="../assets/icons/smmes.png" alt="targets image" class="h-10 w-10 rounded-xl shadow-xl" />
         <router-link to="/smmes">SMMEs</router-link>
       </div>
       <div class="text-blue-300 block hover:text-blue-600">
-        <img src="../assets/icons/income.png" alt="targets image" class="h-10 w-10 rounded-xl shadow-xl ml-1" />
+        <img src="../assets/icons/wallet.png" alt="targets image" class="h-10 w-10 rounded-xl shadow-xl ml-1" />
         <router-link to="/crypto">crypto</router-link>
       </div>
     </div>
