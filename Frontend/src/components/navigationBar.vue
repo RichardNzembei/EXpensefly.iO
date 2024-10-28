@@ -1,5 +1,6 @@
 <script setup>
-import { onMounted, computed } from 'vue';
+import { ref,onMounted, computed } from 'vue';
+import imageUpload from './imageUpload.vue';
 import { useFetchUser } from '@/stores/fetchUser';
 import { useUserStore } from '@/stores/userStore';
 import { useRouter } from 'vue-router';
@@ -8,7 +9,7 @@ const router = useRouter();
 const store = useFetchUser();
 const userStore = useUserStore();
 
-
+const imageData = ref("");
 const userId = computed(() => store.user?.phone || localStorage.getItem('userId'));
 const user = computed(() => userStore.user);
 const vTooltip = {
@@ -50,6 +51,17 @@ onMounted(async () => {
     }
   }
 });
+onMounted(() => {
+  const storedImage = localStorage.getItem("uploadedImage");
+  if (storedImage) {
+    imageData.value = storedImage;
+  }
+});
+const defaultProfileImage = new URL(
+  "../assets/img/profile.png",
+  import.meta.url
+).href;
+
 const fName = computed(() => {
   return user.value ? user.value.first_name.charAt(0).toUpperCase() + user.value.first_name.slice(1) : '';
 });
@@ -62,7 +74,9 @@ const fName = computed(() => {
     </h1>
     <RouterLink to="/profile">
       <p class="flex space-x-2" v-tooltip="'view profile'">
-        <img src="../assets/img/profile.png" alt="profile image" class="rounded-xl shadow-lg" />
+ 
+        <img :src="imageData || defaultProfileImage" alt="Profile Image"
+        class="w-10 h-10 object-cover rounded-full border" @error="imageData = defaultProfileImage" />
         <span class="mt-2 text-mono text-medium">Hello,,<strong>{{ fName }}😊</strong></span>
 
       </p>

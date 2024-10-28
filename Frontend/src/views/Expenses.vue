@@ -62,7 +62,7 @@ const addNewExpense = async () => {
                 <div class="block">
                     <select v-model="category"
                         class="p-2 border-2 rounded-lg bg-white text-gray-700 focus:ring-2 focus:ring-green-200">
-                        <option disabled value="">Select category</option> <!-- Placeholder -->
+                        <option disabled value="">Select category</option>
                         <option value="Food">Food</option>
                         <option value="Transportation">Transportation</option>
                         <option value="Utilities">Utilities</option>

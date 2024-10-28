@@ -4,6 +4,7 @@ import { useRouter } from "vue-router";
 import { useFetchUser } from "@/stores/fetchUser";
 import { useUserStore } from "@/stores/userStore";
 import navigationBar from "@/components/navigationBar.vue";
+import imageUpload from "@/components/imageUpload.vue";
 import info from "@/components/info.vue";
 const showAbout = ref(false);
 
@@ -48,13 +49,17 @@ const handleLogout = () => {
     <div class="max-w-md w-full mx-auto px-3">
       <h2 class="text-center text-slate-500 text-2xl">ACCOUNT</h2>
       <div class="shadow-xl rounded-lg p-5 ">
-        <div>
-          <p class="flex space-x-2 m-auto">
-            <img src="../assets/img/profile.png" alt="profile image" class="h-14 w-14 rounded-xl shadow-xl" />
-            <span class="mt-4 text-mono text-slate-700"> {{ phoneNo }} </span>
-          </p>
-          <span class="ml-14 text-bold">{{ fullName }}</span>
+        <div class="flex items-center space-x-4">
+
+          <div class="relative">
+            <imageUpload />
+          </div>
+          <div class="flex flex-col">
+            <span class="text-mono text-slate-900 text-md">{{ phoneNo }}</span>
+            <span class="font-bold text-lg text-slate-800">{{ fullName }}</span>
+          </div>
         </div>
+
         <div class="flex bg-white space-x-2 mt-10 ">
           <p class="block">
             <img src="../assets/img/expenses.jpg" alt="expenses image" class="rounded-xl shadow-xl h-20">
