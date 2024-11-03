@@ -29,7 +29,7 @@ async function registerUser() {
 </script>
 
 <template>
-  <div class="mx-auto w-full min-h-screen p-4 bg-gradient-to-br from-green-200 to-green-900">
+  <div class="mx-auto w-full min-h-screen p-4 bg-gradient-to-r from-white to-green-400">
     <h4 class="text-2xl font-bold text-center mb-2">User Registration!!</h4>
     <p class="text-center text-gray-600 mb-8">Fill the form and submit</p>
 
