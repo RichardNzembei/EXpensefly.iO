@@ -2,10 +2,9 @@
   "name": "expensefly-io",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
   "scripts": {
-    "dev": "vite --host",
     "build": "vite build",
+    "dev": "vite --host",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -17,14 +16,17 @@
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.11.3",
     "pinia": "^2.2.4",
+    "register-service-worker": "^1.7.2",
     "vue": "^3.5.12",
     "vue-echarts": "^7.0.3",
     "vue-router": "^4.4.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.1.4",
+    "@vue/cli-plugin-pwa": "~5.0.0",
     "autoprefixer": "^10.4.20",
     "tailwindcss": "^3.4.14",
     "vite": "^5.4.8"
-  }
+  },
+  "type": "module"
 }
