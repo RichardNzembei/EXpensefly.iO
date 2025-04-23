@@ -1,84 +1,265 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { useTogglePassword } from "@/composables/toggle";
-import { useUserStore } from "@/stores/userStore";
+import { useTogglePassword } from "@/composables/toggle"; 
+import { useUserStore } from "@/stores/userStore"; 
+import { validateEmail, validatePhone, validatePassword } from "@/utils/validators";
 
 const userStore = useUserStore();
 const router = useRouter();
-
 const { isPassVisible, togglePassword } = useTogglePassword();
 
-const phone = ref("");
-const first_name = ref("");
-const last_name = ref("");
-const email = ref("");
-const password = ref("");
+// Form fields
+const form = ref({
+  phone: "",
+  first_name: "",
+  last_name: "",
+  email: "",
+  password: ""
+});
+
+const errors = ref({
+  phone: "",
+  first_name: "",
+  last_name: "",
+  email: "",
+  password: ""
+});
+
+const loading = ref(false);
+const showSuccess = ref(false);
+
+const validateForm = () => {
+  let isValid = true;
+  
+  // Reset errors
+  errors.value = {
+    phone: "",
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: ""
+  };
+
+  // Phone validation
+  if (!form.value.phone) {
+    errors.value.phone = "Phone number is required";
+    isValid = false;
+  } else if (!validatePhone(form.value.phone)) {
+    errors.value.phone = "Please enter a valid phone number (e.g. 0712345678)";
+    isValid = false;
+  }
+
+  // Name validation
+  if (!form.value.first_name) {
+    errors.value.first_name = "First name is required";
+    isValid = false;
+  }
+
+  if (!form.value.last_name) {
+    errors.value.last_name = "Last name is required";
+    isValid = false;
+  }
+
+  // Email validation
+  if (!form.value.email) {
+    errors.value.email = "Email is required";
+    isValid = false;
+  } else if (!validateEmail(form.value.email)) {
+    errors.value.email = "Please enter a valid email address";
+    isValid = false;
+  }
+
+  // Password validation
+  if (!form.value.password) {
+    errors.value.password = "Password is required";
+    isValid = false;
+  } else if (!validatePassword(form.value.password)) {
+    errors.value.password = "Password must be at least 8 characters with uppercase, lowercase, and a number";
+    isValid = false;
+  }
+
+  return isValid;
+};
 
 async function registerUser() {
+  if (!validateForm()) return;
+
+  loading.value = true;
+  
   try {
-    const response = await userStore.register(phone.value, first_name.value, last_name.value, email.value, password.value);
+    const response = await userStore.register(
+      form.value.phone,
+      form.value.first_name,
+      form.value.last_name,
+      form.value.email,
+      form.value.password
+    );
+    
     if (response) {
-      router.push("/login");
+      showSuccess.value = true;
+      setTimeout(() => {
+        router.push("/login");
+      }, 2000);
     }
   } catch (error) {
     console.error("Registration failed:", error);
-    alert(error.message || "An error occurred during registration.");
+    // Handle specific error messages from API
+    if (error.response?.data?.message) {
+      alert(error.response.data.message);
+    } else {
+      alert(error.message || "An error occurred during registration.");
+    }
+  } finally {
+    loading.value = false;
   }
 }
 </script>
 
 <template>
-  <div class="mx-auto w-full min-h-screen p-4 bg-gradient-to-r from-white to-green-400">
-    <h4 class="text-2xl font-bold text-center mb-2">User Registration!!</h4>
-    <p class="text-center text-gray-600 mb-8">Fill the form and submit</p>
+  <div class="min-h-screen bg-gradient-to-r from-white to-green-400 py-12 px-4 sm:px-6 lg:px-8">
+    <!-- Loading overlay -->
+    <div v-if="loading" class="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-30">
+      <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-green-500"></div>
+    </div>
 
-    <div class="max-w-lg mx-auto">
-      <div class="bg-white shadow-md rounded-lg p-6">
-        <form @submit.prevent="registerUser">
-          <div class="mb-6">
-            <label for="phone" class="block mt-4 mb-2">Phone No</label>
-            <input v-model="phone" v-numeric-only type="text" placeholder="07******" required
-              class="w-full p-2 border rounded-md" />
+    <!-- Success message -->
+    <transition name="fade">
+      <div v-if="showSuccess" class="fixed top-4 right-4 z-50">
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative">
+          <strong class="font-bold">Success!</strong>
+          <span class="block sm:inline"> Registration successful. Redirecting to login...</span>
+        </div>
+      </div>
+    </transition>
 
-            <label for="first_name" class="block mt-4 mb-2">First Name</label>
-            <input v-model="first_name" type="text" placeholder="Enter your first name" required
-              class="w-full p-2 border rounded-md" />
+    <div class="max-w-md mx-auto">
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-extrabold text-gray-900">Create an Account</h1>
+        <p class="mt-2 text-sm text-gray-600">
+          Join our community and start your journey
+        </p>
+      </div>
 
-            <label for="last_name" class="block mt-4 mb-2">Last Name</label>
-            <input v-model="last_name" type="text" placeholder="Enter your last name" required
-              class="w-full p-2 border rounded-md" />
-
-            <label for="email" class="block mt-4 mb-2">Email</label>
-            <input v-model="email" type="email" placeholder="Enter your email" required
-              class="w-full p-2 border rounded-md" />
-
-            <div class="mb-4 relative">
-              <label class="block text-gray-700 font-medium mb-2">Password</label>
-              <input v-model="password" :type="isPassVisible ? 'text' : 'password'" placeholder="*******" required
-                class="w-full p-2 border rounded-md" />
-              <span class="absolute right-3 top-9 cursor-pointer text-gray-500 border-l-4 p-1" @click="togglePassword">
-                {{ isPassVisible ? "🙈" : "👁️" }}
-              </span>
+      <div class="bg-white shadow-xl rounded-lg overflow-hidden">
+        <div class="p-8">
+          <form @submit.prevent="registerUser" novalidate>
+            <!-- Phone Field -->
+            <div class="mb-6">
+              <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+              <input
+                v-model="form.phone"
+                id="phone"
+                v-numeric-only
+                type="text"
+                placeholder="0716******"
+                :class="{'border-red-500': errors.phone}"
+                class="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+              />
+              <p v-if="errors.phone" class="mt-1 text-sm text-red-600">{{ errors.phone }}</p>
             </div>
 
-
-            <div>
-              <button type="submit"
-                class="bg-blue-300 rounded-lg p-1 w-full text-white hover:bg-slate-200 hover:text-blue-500">
-                Register
-              </button>
+            <!-- Name Fields -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <div>
+                <label for="first_name" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                <input
+                  v-model="form.first_name"
+                  id="first_name"
+                  type="text"
+                  placeholder="Saint"
+                  :class="{'border-red-500': errors.first_name}"
+                  class="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+                />
+                <p v-if="errors.first_name" class="mt-1 text-sm text-red-600">{{ errors.first_name }}</p>
+              </div>
+              <div>
+                <label for="last_name" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                <input
+                  v-model="form.last_name"
+                  id="last_name"
+                  type="text"
+                  placeholder="Reborn"
+                  :class="{'border-red-500': errors.last_name}"
+                  class="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+                />
+                <p v-if="errors.last_name" class="mt-1 text-sm text-red-600">{{ errors.last_name }}</p>
+              </div>
             </div>
+
+            <!-- Email Field -->
+            <div class="mb-6">
+              <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+              <input
+                v-model="form.email"
+                id="email"
+                type="email"
+                placeholder="saint.reborn@example.com"
+                :class="{'border-red-500': errors.email}"
+                class="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+              />
+              <p v-if="errors.email" class="mt-1 text-sm text-red-600">{{ errors.email }}</p>
+            </div>
+
+            <!-- Password Field -->
+            <div class="mb-6">
+              <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+              <div class="relative">
+                <input
+                  v-model="form.password"
+                  id="password"
+                  :type="isPassVisible ? 'text' : 'password'"
+                  placeholder="••••••••"
+                  :class="{'border-red-500': errors.password}"
+                  class="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-green-500 transition pr-12"
+                />
+                <button
+                  type="button"
+                  @click="togglePassword"
+                  class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-500 hover:text-gray-700"
+                >
+                  <span class="text-lg">{{ isPassVisible ? "🙈" : "👁️" }}</span>
+                </button>
+              </div>
+              <p v-if="errors.password" class="mt-1 text-sm text-red-600">{{ errors.password }}</p>
+              <p class="mt-1 text-xs text-gray-500">
+                Password must be at least 8 characters with uppercase, lowercase, and a number
+              </p>
+            </div>
+
+            <!-- Submit Button -->
+            <button
+              type="submit"
+              :disabled="loading"
+              class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition disabled:opacity-75 disabled:cursor-not-allowed"
+            >
+              <span v-if="loading">Creating Account...</span>
+              <span v-else>Create Account</span>
+            </button>
+          </form>
+
+          <div class="mt-6 text-center">
+            <p class="text-sm text-gray-600">
+              Already have an account?
+              <router-link
+                to="/login"
+                class="font-medium text-green-600 hover:text-green-500 ml-1"
+              >
+                Sign in
+              </router-link>
+            </p>
           </div>
-        </form>
-
-        <div class="mt-4 text-center">
-          <span>Already have an account?</span>
-          <router-link to="/login" class="text-green-500 hover:underline">
-            Sign In
-          </router-link>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+</style>
