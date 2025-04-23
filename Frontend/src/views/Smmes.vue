@@ -1,7 +1,7 @@
 <template>
-    <div>
-      
-      <div class="container mx-auto px-4 py-8">
+    <div class="min-h-screen bg-gradient-to-br from-gray-50 to-green-50">
+      <navigationBar /> 
+      <div class="container mx-auto px-4 py-8 mt-12">
         <!-- Back button with improved styling -->
         <RouterLink 
           to="/dashboard" 

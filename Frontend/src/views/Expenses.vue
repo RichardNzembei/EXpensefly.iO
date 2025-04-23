@@ -51,9 +51,10 @@ onMounted(() => {
 </script>
 
 <template>
-    <div >
+    <div class="min-h-screen bg-gradient-to-br from-gray-50 to-green-50">
+        <navigationBar />
         <!-- Header Section -->
-        <header class="bg-gradient-to-r from-green-50 to-blue-50 py-4 px-4 sm:px-6">
+        <header class="bg-gradient-to-r from-green-50 to-blue-50 py-4 px-4 sm:px-6 mt-12">
             <div class="max-w-7xl mx-auto flex items-center">
                 <RouterLink to="/dashboard" class="flex-shrink-0 mr-4" aria-label="Go back to dashboard">
                     <img src="../assets/icons/thin-arrow.png" alt="Back arrow" class="h-8 w-8">

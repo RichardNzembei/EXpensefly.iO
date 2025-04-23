@@ -13,11 +13,10 @@ const financialStats = ref([
 </script>
 
 <template>
-  <div class="flex flex-col">
-  
-    
+  <div class="flex flex-col min-h-screen bg-gradient-to-br from-gray-50 to-green-50">
+ <navigationBar />
     <!-- Financial Overview Cards -->
-    <div class="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
+    <div class="container mx-auto px-4 sm:px-6 py-6 sm:py-8 mt-12">
       <div class="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8 sm:mb-10">
         <div v-for="(stat, index) in financialStats" :key="index" 
              class="bg-white rounded-lg sm:rounded-xl p-4 sm:p-6 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1">

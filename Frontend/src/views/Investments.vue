@@ -1,5 +1,7 @@
 <template>
-    <div class=" py-6 px-2 sm:px-3">
+ <div class="min-h-screen bg-gradient-to-br from-gray-50 to-green-50">
+  <navigationBar />
+  <div class=" py-6 px-2 sm:px-3 mt-12">
       <RouterLink 
         to="/dashboard" 
         class="flex items-center text-blue-600 hover:text-blue-800 mb-6 transition-colors"
@@ -122,19 +124,23 @@
         </div>
       </div>
     </div>
+ </div>
   </template>
   
-  <script>
-  export default {
-    name: 'InvestmentPage',
-    metaInfo: {
-      title: 'Investment Hub (Coming Soon)',
-      meta: [
-        { name: 'description', content: 'Our investment tools are under development. Sign up to be notified when we launch.' }
-      ]
-    }
-  }
+  <script setup>
+  import navigationBar from '@/components/navigationBar.vue';
+  import { useHead } from '@vueuse/head'
+  useHead({
+    title: 'Investment Hub (Coming Soon)',
+    meta: [
+      {
+        name: 'description',
+        content: 'Our investment tools are under development. Sign up to be notified when we launch.'
+      }
+    ]
+  });
   </script>
+  
   
   <style scoped>
   /* Animation for the coming soon cards */

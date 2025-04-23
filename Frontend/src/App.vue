@@ -41,10 +41,8 @@ watch(
 
 
 <template>
- <div class="min-h-screen bg-gradient-to-br from-gray-50 to-green-50">
-  <navigationBar />
- <div class="mt-16 ">
+
   <RouterView />
- </div>
- </div>
+ 
+
 </template>

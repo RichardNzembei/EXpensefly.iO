@@ -2,12 +2,13 @@ import './assets/css/tailwind.css';
 
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
-
+import { createHead } from '@vueuse/head'
 import App from './App.vue';
 import router from './router';
 import { useUserStore } from '@/stores/userStore';
 import './registerServiceWorker'
 
+const head = createHead()
 const app = createApp(App);
 const pinia = createPinia();
 
@@ -26,6 +27,8 @@ const numericOnly = {
 app.directive('numeric-only', numericOnly);
 app.use(pinia);
 app.use(router);
+
+app.use(head)
 const userStore = useUserStore();
 userStore.initializeUser();
 app.mount('#app');

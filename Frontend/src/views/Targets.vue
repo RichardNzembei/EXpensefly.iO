@@ -93,9 +93,9 @@ onMounted(fetchTargets);
 </script>
 
 <template>
-  <div>
-    
-    <div class="container mx-auto px-4 py-6 max-w-4xl">
+  <div class="bg-gradient-to-br from-gray-50 to-green-50 min-h-screen">
+    <navigationBar/>
+    <div class="container mx-auto px-4 py-6 max-w-4xl mt-12">
       <!-- Back button -->
       <RouterLink to="/dashboard" class="flex items-center text-blue-600 hover:text-blue-800 mb-6 transition-colors">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">

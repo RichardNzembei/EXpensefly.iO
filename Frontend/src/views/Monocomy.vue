@@ -181,9 +181,9 @@ const resetFilters = () => {
 </script>
 
 <template>
-  <div>
-    
-    <div class="container mx-auto px-4 py-6 max-w-7xl">
+  <div class="min-h-screen bg-gradient-to-br from-gray-50 to-green-50">
+    <NavigationBar />
+    <div class="container mx-auto px-4 py-6 max-w-7xl mt-12">
       <!-- Back button -->
       <RouterLink 
         to="/dashboard" 

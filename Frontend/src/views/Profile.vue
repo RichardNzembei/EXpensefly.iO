@@ -72,10 +72,10 @@ const shareProfile = async () => {
 </script>
 
 <template>
-  <div>
-    
+  <div class="min-h-screen bg-gradient-to-br from-gray-50 to-green-50">
+    <navigationBar/>
     <!-- Back button -->
-    <div class="container mx-auto px-4 py-4">
+    <div class="container mx-auto px-4 py-4 mt-12">
       <RouterLink 
         to="/dashboard" 
         class="flex items-center text-blue-600 hover:text-blue-800 transition-colors"
