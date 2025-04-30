@@ -5,10 +5,10 @@ import { ref } from 'vue';
 
 // Sample data for financial overview cards
 const financialStats = ref([
-  { title: "Monthly Budget", value: "$3,500", change: "+2.5%", trend: "up" },
-  { title: "Total Savings", value: "$12,340", change: "+12%", trend: "up" },
-  { title: "Investments", value: "$8,760", change: "-1.2%", trend: "down" },
-  { title: "Debts", value: "$2,300", change: "-5%", trend: "down" }
+  { title: "Monthly Budget", value: "coming soon!!", change: "+2.5%", trend: "up" },
+  { title: "Total Savings", value: "coming soon!!", change: "+12%", trend: "up" },
+  { title: "Investments", value: "coming soon!!", change: "-1.2%", trend: "down" },
+  { title: "Debts", value: "coming soon!!", change: "-5%", trend: "down" }
 ]);
 </script>
 
