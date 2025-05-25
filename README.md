@@ -6,7 +6,8 @@
 
 You can watch a demo of EXpensifly.iO below:
 
-<video src="./Frontend/src/assets/media/expensifly demo.mp4" controls width="100%"></video>
+▶️ [Click here to watch the demo video](./src/assets/media/expensifly%20demo.mp4)
+
 ---
 
 ## 🌟 Key Features
