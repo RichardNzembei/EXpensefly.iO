@@ -2,6 +2,11 @@
 
 **EXpensifly.iO** is an **open-source** finance management platform that helps users **track expenses, monitor savings, and achieve financial goals** — all in real-time. Built with a modern UI and designed to empower financial literacy and better money habits.
 
+## 🎥 Demo Video
+
+You can watch a demo of EXpensifly.iO below:
+
+<video src="./Frontend/src/assets/media/expensifly demo.mp4" controls width="100%"></video>
 ---
 
 ## 🌟 Key Features
@@ -93,11 +98,7 @@ Visit: [http://localhost:5173](http://localhost:5173)
 
 ---
 
-## 📸 Screenshots
 
-_Add screenshots of the dashboard, savings tracker, and goals here to demonstrate the app UI._
-
----
 
 ## 🤝 Contributing
 
