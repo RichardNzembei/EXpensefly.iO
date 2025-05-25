@@ -6,7 +6,7 @@
 
 You can watch a demo of EXpensifly.iO below:
 
-▶️ [Click here to watch the demo video](./src/assets/media/expensifly%20demo.mp4)
+▶️ [Click here to watch the demo video](./Frontend/src/assets/media/expensifly%20demo.mp4)
 
 ---
 
