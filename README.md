@@ -132,7 +132,8 @@ To contribute:
 
 ## 📜 License
 
-This project is licensed under the **MIT License** — free for personal and commercial use with attribution.
+This project is licensed under the **Apache License 2.0** — free to use, modify, and distribute with proper credit.
+
 
 ---
 
