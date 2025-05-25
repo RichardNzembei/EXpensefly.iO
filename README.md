@@ -4,9 +4,11 @@
 
 ## 🎥 Demo Video
 
-You can watch a demo of EXpensifly.iO below:
+Watch the full demo of **EXpensifly.iO** in action:
 
-▶️ [Click here to watch the demo video](./Frontend/src/assets/media/expensifly%20demo.mp4)
+[![Watch the demo](https://img.youtube.com/vi/DTBvnghURds/0.jpg)](https://youtube.com/shorts/DTBvnghURds?feature=share)
+
+> 📽️ Click the thumbnail or [watch it directly on YouTube](https://youtube.com/shorts/DTBvnghURds?feature=share)
 
 ---
 
