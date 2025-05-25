@@ -12,6 +12,13 @@ Watch the full demo of **EXpensifly.iO** in action:
 
 ---
 
+## 🌐 Live App
+
+Try out **EXpensifly.iO** live:
+
+🔗 [Visit the App →](https://e-xpensefly-i-o.vercel.app/)
+
+
 ## 🌟 Key Features
 
 - 📊 **Expense Tracking**
