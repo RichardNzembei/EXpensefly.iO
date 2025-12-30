@@ -16,13 +16,11 @@ const amount = ref('');
 const name = ref('');
 const category = ref('');
 const showForm = ref(false);
-
 const addNewExpense = async () => {
     if (!date.value || !amount.value || !category.value || !name.value) {
         alert("Please fill all fields");
         return;
     }
-
     try {
         await expensesStore.addExpense(
             name.value.trim(),
@@ -30,8 +28,6 @@ const addNewExpense = async () => {
             category.value,
             date.value
         );
-        
-        // Reset form and hide
         name.value = '';
         amount.value = '';
         category.value = '';
@@ -42,18 +38,14 @@ const addNewExpense = async () => {
         alert("Failed to add expense. Please try again.");
     }
 };
-
-// Set default date to today
 onMounted(() => {
     const today = new Date();
     date.value = today.toISOString().split('T')[0];
 });
 </script>
-
 <template>
     <div class="min-h-screen bg-gradient-to-br from-gray-50 to-green-50">
         <navigationBar />
-        <!-- Header Section -->
         <header class="bg-gradient-to-r from-green-50 to-blue-50 py-4 px-4 sm:px-6 mt-12">
             <div class="max-w-7xl mx-auto flex items-center">
                 <RouterLink to="/dashboard" class="flex-shrink-0 mr-4" aria-label="Go back to dashboard">
@@ -69,10 +61,7 @@ onMounted(() => {
                 </div>
             </div>
         </header>
-
-        <!-- Main Content -->
         <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-            <!-- Add Expense Button -->
             <div class="mb-6 flex justify-center sm:justify-end">
                 <button
                     @click="showForm = !showForm"
@@ -84,8 +73,6 @@ onMounted(() => {
                     </svg>
                 </button>
             </div>
-
-            <!-- Expense Form (Hidden by default) -->
             <transition
                 enter-active-class="transition ease-out duration-200"
                 enter-from-class="opacity-0 translate-y-4"
@@ -108,7 +95,6 @@ onMounted(() => {
                                 required
                             >
                         </div>
-
                         <div class="space-y-1">
                             <label for="expense-amount" class="block text-sm font-medium text-gray-700">Amount (Ksh)</label>
                             <input
@@ -123,7 +109,6 @@ onMounted(() => {
                                 required
                             >
                         </div>
-
                         <div class="space-y-1">
                             <label for="expense-date" class="block text-sm font-medium text-gray-700">Date</label>
                             <input
@@ -134,7 +119,6 @@ onMounted(() => {
                                 required
                             >
                         </div>
-
                         <div class="space-y-1">
                             <label for="expense-category" class="block text-sm font-medium text-gray-700">Category</label>
                             <select
@@ -152,7 +136,6 @@ onMounted(() => {
                                 <option value="Outings">Outings</option>
                             </select>
                         </div>
-
                         <div class="flex items-end">
                             <button
                                 type="submit"
@@ -164,16 +147,12 @@ onMounted(() => {
                     </form>
                 </section>
             </transition>
-
-            <!-- Data Visualization -->
             <section class="mb-8">
                 <h2 class="text-lg sm:text-xl font-semibold text-blue-600 mb-4 text-center">Expense Breakdown</h2>
                 <div class="bg-white rounded-xl shadow-md p-4 sm:p-6">
                     <chart />
                 </div>
             </section>
-
-            <!-- Expense List -->
             <section>
                 <h2 class="text-lg sm:text-xl font-semibold text-blue-600 mb-4 text-center">Recent Expenses</h2>
                 <div class="bg-white rounded-xl shadow-md p-4 sm:p-6">
@@ -185,13 +164,11 @@ onMounted(() => {
 </template>
 
 <style scoped>
-/* Responsive typography */
 @media (max-width: 640px) {
     html {
         font-size: 14px;
     }
 }
-
 @media (min-width: 641px) and (max-width: 1023px) {
     html {
         font-size: 15px;
@@ -203,38 +180,26 @@ onMounted(() => {
         font-size: 16px;
     }
 }
-
-/* Accessibility improvements */
 button, input, select {
     min-height: 44px;
 }
-
-/* Focus styles */
 :focus {
     outline: none;
     box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.5);
 }
-
-/* Smooth transitions */
 button, .transition {
     transition: all 0.2s ease;
 }
-
-/* Responsive grid adjustments */
 @media (max-width: 767px) {
     .sm\:grid {
         display: block;
     }
 }
-
-/* Optimize form layout on small screens */
 @media (max-width: 639px) {
     form > div {
         margin-bottom: 1rem;
     }
 }
-
-/* Animation for form toggle */
 .transition {
     will-change: transform, opacity;
 }
