@@ -6,201 +6,215 @@ import chart from '@/components/chart.vue';
 import userExpenses from '@/components/userExpenses.vue';
 import { useUserStore } from '@/stores/userStore';
 import { useExpensesStore } from '@/stores/expensesStore';
+import receiptScanner from '@/components/receiptScanner.vue';
 
 const userStore = useUserStore();
 const expensesStore = useExpensesStore();
 const router = useRouter();
-
 const date = ref('');
 const amount = ref('');
 const name = ref('');
 const category = ref('');
 const showForm = ref(false);
+
+const handleReceiptScanned = (receiptData) => {
+  name.value = receiptData.merchant || '';
+  amount.value = receiptData.amount || '';
+  category.value = receiptData.category || '';
+  date.value = receiptData.date || date.value;
+  showForm.value = true;
+};
 const addNewExpense = async () => {
-    if (!date.value || !amount.value || !category.value || !name.value) {
-        alert("Please fill all fields");
-        return;
-    }
-    try {
-        await expensesStore.addExpense(
-            name.value.trim(),
-            parseFloat(amount.value),
-            category.value,
-            date.value
-        );
-        name.value = '';
-        amount.value = '';
-        category.value = '';
-        date.value = '';
-        showForm.value = false;
-    } catch (error) {
-        console.error("Error adding expense:", error);
-        alert("Failed to add expense. Please try again.");
-    }
+  if (!date.value || !amount.value || !category.value || !name.value) {
+    alert("Please fill all fields");
+    return;
+  }
+  try {
+    await expensesStore.addExpense(
+        name.value.trim(),
+        parseFloat(amount.value),
+        category.value,
+        date.value
+    );
+    name.value = '';
+    amount.value = '';
+    category.value = '';
+    date.value = '';
+    showForm.value = false;
+  } catch (error) {
+    console.error("Error adding expense:", error);
+    alert("Failed to add expense. Please try again.");
+  }
 };
 onMounted(() => {
-    const today = new Date();
-    date.value = today.toISOString().split('T')[0];
+  const today = new Date();
+  date.value = today.toISOString().split('T')[0];
 });
 </script>
 <template>
-    <div class="min-h-screen bg-gradient-to-br from-gray-50 to-green-50">
-        <navigationBar />
-        <header class="bg-gradient-to-r from-green-50 to-blue-50 py-4 px-4 sm:px-6 mt-12">
-            <div class="max-w-7xl mx-auto flex items-center">
-                <RouterLink to="/dashboard" class="flex-shrink-0 mr-4" aria-label="Go back to dashboard">
-                    <img src="../assets/icons/thin-arrow.png" alt="Back arrow" class="h-8 w-8">
-                </RouterLink>
-                <div>
-                    <h1 class="text-md sm:text-lg md:text-xl font-light text-gray-800">
-                        Expense Tracker
-                    </h1>
-                    <p class="text-sm sm:text-base text-green-700 mt-1">
-                        Track and manage your spending effortlessly
-                    </p>
-                </div>
-            </div>
-        </header>
-        <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-            <div class="mb-6 flex justify-center sm:justify-end">
-                <button
-                    @click="showForm = !showForm"
-                    class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 sm:py-3 sm:px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 flex items-center"
-                >
-                    <span class="mr-2">{{ showForm ? 'Cancel' : 'Add New Expense' }}</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
-                    </svg>
-                </button>
-            </div>
-            <transition
-                enter-active-class="transition ease-out duration-200"
-                enter-from-class="opacity-0 translate-y-4"
-                enter-to-class="opacity-100 translate-y-0"
-                leave-active-class="transition ease-in duration-150"
-                leave-from-class="opacity-100 translate-y-0"
-                leave-to-class="opacity-0 translate-y-4"
+  <div class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-green-50">
+    <navigationBar />
+    <header class="bg-white border-b border-gray-100 sticky top-0 z-10 backdrop-blur-sm bg-white/90 mt-16">
+      <div class="max-w-6xl mx-auto px-4 py-4 flex items-center gap-4">
+        <RouterLink to="/dashboard" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </RouterLink>
+        <div class="flex-1">
+          <h1 class="text-xl font-semibold text-gray-900">Expense Tracker</h1>
+          <p class="text-sm text-gray-500">Manage your spending</p>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-6 space-y-6">
+      <receiptScanner :onReceiptScanned="handleReceiptScanned" />
+      <div v-if="!showForm" class="text-center">
+        <button
+            @click="showForm = true"
+            class="w-full bg-white hover:bg-gray-50 border-2 border-dashed border-gray-300 hover:border-green-600 text-gray-600 hover:text-green-600 font-medium py-4 rounded-2xl transition-all flex items-center justify-center gap-2"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+          </svg>
+          <span>Add Expense Manually</span>
+        </button>
+      </div>
+      <transition
+          enter-active-class="transition ease-out duration-200"
+          enter-from-class="opacity-0 scale-95"
+          enter-to-class="opacity-100 scale-100"
+          leave-active-class="transition ease-in duration-150"
+          leave-from-class="opacity-100 scale-100"
+          leave-to-class="opacity-0 scale-95"
+      >
+        <section v-if="showForm" class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-lg font-semibold text-gray-900">New Expense</h2>
+            <button
+                @click="showForm = false"
+                class="text-gray-400 hover:text-gray-600 p-1 rounded-lg hover:bg-gray-100 transition-colors"
             >
-                <section v-if="showForm" class="bg-white rounded-xl shadow-md p-4 sm:p-6 mb-8">
-                    <h2 class="sr-only">Add New Expense</h2>
-                    <form @submit.prevent="addNewExpense" class="space-y-4 sm:space-y-0 sm:grid sm:grid-cols-2 lg:grid-cols-5 sm:gap-4">
-                        <div class="space-y-1">
-                            <label for="expense-name" class="block text-sm font-medium text-gray-700">Description</label>
-                            <input
-                                id="expense-name"
-                                v-model="name"
-                                type="text"
-                                class="w-full rounded-lg border border-gray-300 p-2 sm:p-3 focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                                placeholder="e.g. Groceries"
-                                required
-                            >
-                        </div>
-                        <div class="space-y-1">
-                            <label for="expense-amount" class="block text-sm font-medium text-gray-700">Amount (Ksh)</label>
-                            <input
-                                id="expense-amount"
-                                v-model="amount"
-                                v-numeric-only
-                                type="number"
-                                min="0"
-                                step="0.01"
-                                class="w-full rounded-lg border border-gray-300 p-2 sm:p-3 focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                                placeholder="0.00"
-                                required
-                            >
-                        </div>
-                        <div class="space-y-1">
-                            <label for="expense-date" class="block text-sm font-medium text-gray-700">Date</label>
-                            <input
-                                id="expense-date"
-                                v-model="date"
-                                type="date"
-                                class="w-full rounded-lg border border-gray-300 p-2 sm:p-3 bg-white text-gray-700 focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                                required
-                            >
-                        </div>
-                        <div class="space-y-1">
-                            <label for="expense-category" class="block text-sm font-medium text-gray-700">Category</label>
-                            <select
-                                id="expense-category"
-                                v-model="category"
-                                class="w-full rounded-lg border border-gray-300 p-2 sm:p-3 bg-white text-gray-700 focus:ring-2 focus:ring-green-500 focus:border-green-500"
-                                required
-                            >
-                                <option value="" disabled selected>Select category</option>
-                                <option value="Food">Food</option>
-                                <option value="Transportation">Transportation</option>
-                                <option value="Utilities">Utilities</option>
-                                <option value="Black Tax">Black Tax</option>
-                                <option value="Shopping">Shopping</option>
-                                <option value="Outings">Outings</option>
-                            </select>
-                        </div>
-                        <div class="flex items-end">
-                            <button
-                                type="submit"
-                                class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 sm:py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-                            >
-                                Save Expense
-                            </button>
-                        </div>
-                    </form>
-                </section>
-            </transition>
-            <section class="mb-8">
-                <h2 class="text-lg sm:text-xl font-semibold text-blue-600 mb-4 text-center">Expense Breakdown</h2>
-                <div class="bg-white rounded-xl shadow-md p-4 sm:p-6">
-                    <chart />
-                </div>
-            </section>
-            <section>
-                <h2 class="text-lg sm:text-xl font-semibold text-blue-600 mb-4 text-center">Recent Expenses</h2>
-                <div class="bg-white rounded-xl shadow-md p-4 sm:p-6">
-                    <userExpenses />
-                </div>
-            </section>
-        </main>
-    </div>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </div>
+          <form @submit.prevent="addNewExpense" class="space-y-4">
+            <div>
+              <label for="expense-name" class="block text-sm font-medium text-gray-700 mb-2">
+                Description
+              </label>
+              <input
+                  id="expense-name"
+                  v-model="name"
+                  type="text"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all"
+                  placeholder="e.g. Groceries"
+                  required
+              >
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label for="expense-amount" class="block text-sm font-medium text-gray-700 mb-2">
+                  Amount (Ksh)
+                </label>
+                <input
+                    id="expense-amount"
+                    v-model="amount"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all"
+                    placeholder="0.00"
+                    required
+                >
+              </div>
+              <div>
+                <label for="expense-date" class="block text-sm font-medium text-gray-700 mb-2">
+                  Date
+                </label>
+                <input
+                    id="expense-date"
+                    v-model="date"
+                    type="date"
+                    class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all bg-white"
+                    required
+                >
+              </div>
+            </div>
+            <div>
+              <label for="expense-category" class="block text-sm font-medium text-gray-700 mb-2">
+                Category
+              </label>
+              <select
+                  id="expense-category"
+                  v-model="category"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all bg-white appearance-none cursor-pointer"
+                  required
+              >
+                <option value="" disabled>Select category</option>
+                <option value="Food">Food</option>
+                <option value="Transportation">Transportation</option>
+                <option value="Utilities">Utilities</option>
+                <option value="Black Tax">Black Tax</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Outings">Outings</option>
+              </select>
+            </div>
+            <button
+                type="submit"
+                class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-xl transition-colors shadow-sm hover:shadow-md"
+            >
+              Save Expense
+            </button>
+          </form>
+        </section>
+      </transition>
+      <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="p-2 bg-blue-100 rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+            </svg>
+          </div>
+          <h2 class="text-lg font-semibold text-gray-900">Expense Breakdown</h2>
+        </div>
+        <chart />
+      </section>
+      <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="p-2 bg-green-100 rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+            </svg>
+          </div>
+          <h2 class="text-lg font-semibold text-gray-900">Recent Expenses</h2>
+        </div>
+        <userExpenses />
+      </section>
+    </main>
+  </div>
 </template>
 
 <style scoped>
-@media (max-width: 640px) {
-    html {
-        font-size: 14px;
-    }
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
 }
-@media (min-width: 641px) and (max-width: 1023px) {
-    html {
-        font-size: 15px;
-    }
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
 }
-
-@media (min-width: 1024px) {
-    html {
-        font-size: 16px;
-    }
+select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
 }
-button, input, select {
-    min-height: 44px;
-}
-:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.5);
-}
-button, .transition {
-    transition: all 0.2s ease;
-}
-@media (max-width: 767px) {
-    .sm\:grid {
-        display: block;
-    }
-}
-@media (max-width: 639px) {
-    form > div {
-        margin-bottom: 1rem;
-    }
-}
-.transition {
-    will-change: transform, opacity;
+.transition-all {
+  transition: all 0.2s ease;
 }
 </style>
