@@ -6,9 +6,23 @@ const apiBaseUrl = process.env.NODE_ENV === 'production'
     : 'http://localhost:3000';
 
 export const useSavingsStore = defineStore('savingsStore', {
+    persist: true,
     state: () => ({
         savings: []
     }),
+
+    getters: {
+        totalSavings(state) {
+            return state.savings.reduce((sum, s) => sum + (parseFloat(s.amount) || 0), 0);
+        },
+        savingsByMethod(state) {
+            return state.savings.reduce((acc, s) => {
+                const method = s.method || 'Other';
+                acc[method] = (acc[method] || 0) + (parseFloat(s.amount) || 0);
+                return acc;
+            }, {});
+        }
+    },
 
     actions: {
         getCurrentUserId() {
@@ -45,7 +59,6 @@ export const useSavingsStore = defineStore('savingsStore', {
 
                 const result = await response.json();
                 this.savings.push(result);
-                console.log('Savings added successfully:', result);
                 return result;
 
             } catch (error) {
@@ -75,8 +88,6 @@ export const useSavingsStore = defineStore('savingsStore', {
                 }
 
                 const result = await response.json();
-                console.log('Fetched savings:', result);
-
 
                 if (result && Array.isArray(result.savings)) {
                     this.savings = result.savings;

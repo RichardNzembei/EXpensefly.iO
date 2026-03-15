@@ -1,6 +1,7 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import { useExpensesStore } from '@/stores/expensesStore';
+import { formatKES } from '@/utils/currency';
 
 const store = useExpensesStore();
 const showAll = ref(false);
@@ -22,12 +23,12 @@ const categoryIcons = {
 };
 
 const categoryColors = {
-  'Food': 'bg-orange-100 text-orange-700 border-orange-200',
-  'Transportation': 'bg-blue-100 text-blue-700 border-blue-200',
-  'Utilities': 'bg-yellow-100 text-yellow-700 border-yellow-200',
-  'Black Tax': 'bg-purple-100 text-purple-700 border-purple-200',
-  'Shopping': 'bg-pink-100 text-pink-700 border-pink-200',
-  'Outings': 'bg-green-100 text-green-700 border-green-200'
+  'Food': 'bg-emerald-50 text-emerald-700',
+  'Transportation': 'bg-gray-100 text-gray-700',
+  'Utilities': 'bg-emerald-50 text-emerald-600',
+  'Black Tax': 'bg-gray-100 text-gray-800',
+  'Shopping': 'bg-emerald-50 text-emerald-800',
+  'Outings': 'bg-gray-100 text-gray-600'
 };
 
 const fetchExpenses = async () => {
@@ -41,85 +42,66 @@ const fetchExpenses = async () => {
     isLoading.value = false;
   }
 };
+
 const formatDate = (dateString) => {
   const date = new Date(dateString);
   const today = new Date();
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);
 
-  if (date.toDateString() === today.toDateString()) {
-    return 'Today';
-  } else if (date.toDateString() === yesterday.toDateString()) {
-    return 'Yesterday';
-  } else {
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-  }
+  if (date.toDateString() === today.toDateString()) return 'Today';
+  if (date.toDateString() === yesterday.toDateString()) return 'Yesterday';
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 };
 
 onMounted(fetchExpenses);
 </script>
+
 <template>
   <div>
-    <div v-if="isLoading" class="flex justify-center py-12">
-      <div class="w-12 h-12 border-4 border-green-600 border-t-transparent rounded-full animate-spin"></div>
+    <div v-if="isLoading" class="flex justify-center py-8">
+      <div class="w-8 h-8 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin"></div>
     </div>
-    <div v-else-if="error" class="text-center py-12">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-3 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-      </svg>
-      <p class="text-red-600 mb-3">{{ error }}</p>
-      <button
-          @click="fetchExpenses"
-          class="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-lg transition-colors"
-      >
-        Retry
-      </button>
+    <div v-else-if="error" class="text-center py-8">
+      <p class="text-red-500 text-sm mb-2">{{ error }}</p>
+      <button @click="fetchExpenses" class="text-sm text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1 rounded-lg">Retry</button>
     </div>
-    <div v-else-if="expenses.length === 0" class="text-center py-12">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto mb-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" />
-      </svg>
-      <p class="text-gray-600 font-medium mb-1">No expenses yet</p>
-      <p class="text-sm text-gray-500">Add your first expense to get started</p>
+    <div v-else-if="expenses.length === 0" class="text-center py-8">
+      <p class="text-sm text-gray-400">No expenses yet</p>
+      <p class="text-xs text-gray-300 mt-0.5">Add your first expense to get started</p>
     </div>
-    <div v-else class="space-y-3">
+    <div v-else class="space-y-2">
       <div
-          v-for="expense in displayedExpenses"
-          :key="expense.id"
-          class="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors group"
+        v-for="expense in displayedExpenses"
+        :key="expense.id"
+        class="flex items-center justify-between p-3 rounded-xl hover:bg-gray-50 transition-colors"
       >
         <div class="flex items-center gap-3 flex-1 min-w-0">
-          <div class="flex-shrink-0">
-            <span
-                :class="categoryColors[expense.category] || 'bg-gray-100 text-gray-700 border-gray-200'"
-                class="inline-flex items-center justify-center w-10 h-10 rounded-lg text-lg border"
-            >
-              {{ categoryIcons[expense.category] || '📝' }}
-            </span>
-          </div>
+          <span
+            :class="categoryColors[expense.category] || 'bg-gray-100 text-gray-700'"
+            class="inline-flex items-center justify-center w-9 h-9 rounded-lg text-base"
+          >
+            {{ categoryIcons[expense.category] || '📝' }}
+          </span>
           <div class="flex-1 min-w-0">
-            <p class="font-medium text-gray-900 truncate">{{ expense.name }}</p>
-            <div class="flex items-center gap-2 mt-1">
+            <p class="text-sm font-medium text-gray-900 truncate">{{ expense.name }}</p>
+            <div class="flex items-center gap-2 mt-0.5">
               <span
-                  :class="categoryColors[expense.category] || 'bg-gray-100 text-gray-700'"
-                  class="text-xs px-2 py-0.5 rounded-md font-medium"
+                :class="categoryColors[expense.category] || 'bg-gray-100 text-gray-700'"
+                class="text-[10px] px-1.5 py-0.5 rounded font-medium"
               >
                 {{ expense.category }}
               </span>
-              <span class="text-xs text-gray-500">{{ formatDate(expense.date) }}</span>
+              <span class="text-[10px] text-gray-400">{{ formatDate(expense.date) }}</span>
             </div>
           </div>
         </div>
-        <div class="text-right ml-4">
-          <p class="text-lg font-semibold text-gray-900">
-            Ksh {{ parseFloat(expense.amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }}
-          </p>
-        </div>
+        <p class="text-sm font-semibold text-gray-900 ml-3">{{ formatKES(parseFloat(expense.amount)) }}</p>
       </div>
-      <div v-if="hasMoreExpenses" class="text-center pt-2">
+      <div v-if="hasMoreExpenses" class="text-center pt-1">
         <button
-            @click="showAll = !showAll"
-            class="text-green-600 hover:text-green-700 font-medium text-sm px-4 py-2 rounded-lg hover:bg-green-50 transition-colors"
+          @click="showAll = !showAll"
+          class="text-emerald-600 hover:text-emerald-700 font-medium text-xs px-3 py-1.5 rounded-lg hover:bg-emerald-50 transition-colors"
         >
           {{ showAll ? 'Show Less' : `Show All (${expenses.length})` }}
         </button>
@@ -127,15 +109,3 @@ onMounted(fetchExpenses);
     </div>
   </div>
 </template>
-
-<style scoped>
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-.animate-spin {
-  animation: spin 1s linear infinite;
-}
-.group:hover {
-  transform: translateX(2px);
-}
-</style>

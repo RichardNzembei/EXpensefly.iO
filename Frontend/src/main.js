@@ -2,6 +2,7 @@ import './assets/css/tailwind.css';
 
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import { createHead } from '@vueuse/head'
 import App from './App.vue';
 import router from './router';
@@ -11,6 +12,7 @@ import './registerServiceWorker'
 const head = createHead()
 const app = createApp(App);
 const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
 
 const numericOnly = {
     mounted(el) {

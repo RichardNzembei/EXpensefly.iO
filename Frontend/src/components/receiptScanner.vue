@@ -225,10 +225,10 @@ const handleReset = () => {
 </script>
 
 <template>
-  <div class="bg-gradient-to-br from-blue-50 to-green-50 rounded-xl shadow-lg p-4 sm:p-6 mb-8">
+  <div class="bg-gradient-to-br from-gray-50 to-emerald-50 rounded-xl shadow-lg p-4 sm:p-6 mb-8">
     <div class="flex items-center justify-between mb-4">
       <h3 class="text-lg font-semibold text-gray-600 flex items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
           <circle cx="12" cy="13" r="4"/>
         </svg>
@@ -271,7 +271,7 @@ const handleReset = () => {
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <label
             for="receipt-upload"
-            class="flex items-center justify-center bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer"
+            class="flex items-center justify-center bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
@@ -282,7 +282,7 @@ const handleReset = () => {
 
         <label
             for="receipt-upload"
-            class="flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer"
+            class="flex items-center justify-center bg-gray-700 hover:bg-gray-800 text-white font-medium py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -310,13 +310,13 @@ const handleReset = () => {
             <!-- Scanning State -->
             <div v-if="scanning" class="flex items-center justify-center h-48">
               <div class="text-center w-full">
-                <svg class="animate-spin h-8 w-8 mx-auto mb-2 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg class="animate-spin h-8 w-8 mx-auto mb-2 text-emerald-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                   <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
                 <p class="text-sm text-gray-600 mb-2">Reading receipt...</p>
                 <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
-                  <div class="bg-green-600 h-2 rounded-full transition-all duration-300" :style="{ width: progress + '%' }"></div>
+                  <div class="bg-emerald-600 h-2 rounded-full transition-all duration-300" :style="{ width: progress + '%' }"></div>
                 </div>
                 <p class="text-xs text-gray-500">{{ progress }}%</p>
               </div>
@@ -329,13 +329,13 @@ const handleReset = () => {
               <p class="text-sm text-red-600">{{ error }}</p>
               <button
                   @click="handleReset"
-                  class="mt-3 text-sm text-blue-600 hover:text-blue-700 underline"
+                  class="mt-3 text-sm text-emerald-600 hover:text-emerald-700 underline"
               >
                 Try another image
               </button>
             </div>
             <div v-else-if="extractedData">
-              <div class="flex items-center text-green-600 mb-4">
+              <div class="flex items-center text-emerald-600 mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
                   <polyline points="22 4 12 14.01 9 11.01"/>
@@ -349,7 +349,7 @@ const handleReset = () => {
                 </div>
                 <div>
                   <span class="text-xs text-gray-500">Amount</span>
-                  <p class="font-medium text-green-600">
+                  <p class="font-medium text-emerald-600">
                     Ksh {{ extractedData.amount ? extractedData.amount.toFixed(2) : '0.00' }}
                   </p>
                 </div>
@@ -362,14 +362,14 @@ const handleReset = () => {
                   <p class="font-medium">{{ extractedData.category || 'Not detected' }}</p>
                 </div>
               </div>
-              <div class="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                <p class="text-xs text-blue-800">
+              <div class="mt-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
+                <p class="text-xs text-emerald-800">
                   Please review the extracted data before saving. You can edit it after clicking "Use This Data".
                 </p>
               </div>
               <button
                   @click="handleUseData"
-                  class="w-full mt-4 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
+                  class="w-full mt-4 bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
               >
                 Use This Data
               </button>

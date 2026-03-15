@@ -2,24 +2,33 @@ const express = require('express');
 const router = express.Router();
 const firestore = require('../firebaseConfig');
 
-// Add or update an expense
+// Add an expense
 router.post('/add-expense', async (req, res) => {
     const { userId, name, amount, date, category } = req.body;
+
+    if (!userId || !name || amount == null || !date || !category) {
+        return res.status(400).json({ message: 'All fields are required: userId, name, amount, date, category' });
+    }
+
+    const parsedAmount = Number(amount);
+    if (isNaN(parsedAmount) || parsedAmount < 0) {
+        return res.status(400).json({ message: 'Amount must be a non-negative number' });
+    }
 
     try {
         const expensesRef = firestore.collection('users').doc(userId).collection('expenses');
         const expenseRef = expensesRef.doc();
 
         await expenseRef.set({
-            name,
-            amount,
+            name: name.trim(),
+            amount: parsedAmount,
             date,
-            category,
-        }, { merge: true });
+            category: category.trim(),
+        });
 
-        res.status(201).json({ message: 'Expense added/updated successfully', expenseId: expenseRef.id });
+        res.status(201).json({ message: 'Expense added successfully', expenseId: expenseRef.id });
     } catch (error) {
-        console.error('Error adding/updating expense:', error);
+        console.error('Error adding expense:', error);
         res.status(500).json({ message: 'Server error' });
     }
 });

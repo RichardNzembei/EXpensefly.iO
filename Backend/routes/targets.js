@@ -6,16 +6,25 @@ const firestore = require('../firebaseConfig');
 router.post('/add-target', async (req, res) => {
     const { userId, description, amount, deadline } = req.body;
 
+    if (!userId || !description || amount == null || !deadline) {
+        return res.status(400).json({ message: 'All fields are required: userId, description, amount, deadline' });
+    }
+
+    const parsedAmount = Number(amount);
+    if (isNaN(parsedAmount) || parsedAmount <= 0) {
+        return res.status(400).json({ message: 'Amount must be a positive number' });
+    }
+
     try {
         const targetsRef = firestore.collection('users').doc(userId).collection('targets');
         const targetRef = targetsRef.doc();
 
         await targetRef.set({
-            description,
-            amount,
+            description: description.trim(),
+            amount: parsedAmount,
             deadline,
             completed: false
-        }, { merge: true });
+        });
 
         res.status(201).json({ message: 'Target added successfully', targetId: targetRef.id });
     } catch (error) {
@@ -59,8 +68,17 @@ router.put('/targets/complete/:targetId', async (req, res) => {
     const { targetId } = req.params;
     const { userId } = req.body;
 
+    if (!userId) {
+        return res.status(400).json({ message: 'userId is required' });
+    }
+
     try {
         const targetRef = firestore.collection('users').doc(userId).collection('targets').doc(targetId);
+        const targetDoc = await targetRef.get();
+
+        if (!targetDoc.exists) {
+            return res.status(404).json({ message: 'Target not found' });
+        }
 
         await targetRef.update({ completed: true });
 

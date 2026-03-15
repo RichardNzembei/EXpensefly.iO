@@ -61,6 +61,10 @@ export const useUserStore = defineStore('user', {
       this.user = null;
       localStorage.removeItem('user');
       localStorage.removeItem('userId');
+      localStorage.removeItem('expenses');
+      localStorage.removeItem('savingsStore');
+      localStorage.removeItem('targetStore');
+      localStorage.removeItem('imageStore');
     }
   }
 });

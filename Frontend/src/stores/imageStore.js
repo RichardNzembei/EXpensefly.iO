@@ -2,12 +2,13 @@ import { defineStore } from 'pinia';
 import { useUserStore } from './userStore';
 
 const apiBaseUrl = process.env.NODE_ENV === 'production'
-  ? 'https://your-production-url.com'
+  ? 'https://expensefly-io-1.onrender.com'
   : 'http://localhost:3000';
 
 export const useImageStore = defineStore('imageStore', {
+  persist: true,
   state: () => ({
-    images: [] 
+    images: []
   }),
 
   actions: {

@@ -181,27 +181,21 @@ const resetFilters = () => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-gray-50 to-green-50">
+  <div class="min-h-screen bg-gray-50">
     <NavigationBar />
-    <div class="container mx-auto px-4 py-6 max-w-7xl mt-12">
-      <!-- Back button -->
-      <RouterLink 
-        to="/dashboard" 
-        class="flex items-center text-blue-600 hover:text-blue-800 mb-6 transition-colors"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-        </svg>
-        <span class="ml-2 text-sm sm:text-base">Back to Dashboard</span>
-      </RouterLink>
-
-      <!-- Header section -->
-      <header class="text-center mb-8">
-        <h1 class="text-2xl sm:text-4xl font-bold text-gray-900 mb-3">Money Mechanics Academy</h1>
-        <p class="text-sm sm:text-base text-gray-600 max-w-3xl mx-auto">
-          Your comprehensive guide to mastering personal finance. From beginner basics to advanced investment strategies.
-        </p>
-      </header>
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 pt-16 pb-20 md:pb-6">
+      <!-- Header -->
+      <div class="pt-4 pb-2 flex items-center gap-3">
+        <RouterLink to="/dashboard" class="p-1.5 hover:bg-gray-100 rounded-lg transition-colors">
+          <svg class="h-5 w-5 text-gray-600" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+          </svg>
+        </RouterLink>
+        <div>
+          <h1 class="text-xl font-semibold text-gray-900">Money Mechanics Academy</h1>
+          <p class="text-sm text-gray-500">Master personal finance with expert guides</p>
+        </div>
+      </div>
 
       <!-- Featured articles carousel -->
       <section v-if="!isLoading && featuredArticles.length > 0" class="mb-10">
@@ -232,7 +226,7 @@ const resetFilters = () => {
       </section>
 
       <!-- Search and filter section -->
-      <div class="mb-8 bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100">
+      <div class="mb-6 card p-4">
         <div class="flex flex-col sm:flex-row gap-4 mb-4">
           <!-- Search input -->
           <div class="relative flex-grow">
@@ -245,7 +239,7 @@ const resetFilters = () => {
               v-model="searchQuery"
               type="text"
               placeholder="Search articles by title, content, or tags..."
-              class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base"
+              class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm sm:text-base"
             >
           </div>
           
@@ -267,7 +261,7 @@ const resetFilters = () => {
             <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
             <select 
               v-model="activeCategory"
-              class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-lg"
+              class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 rounded-lg"
             >
               <option v-for="category in categories" :key="category" :value="category">
                 {{ category }}
@@ -279,7 +273,7 @@ const resetFilters = () => {
             <label class="block text-sm font-medium text-gray-700 mb-1">Difficulty</label>
             <select 
               v-model="activeDifficulty"
-              class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-lg"
+              class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 rounded-lg"
             >
               <option v-for="difficulty in difficulties" :key="difficulty" :value="difficulty">
                 {{ difficulty }}
@@ -291,7 +285,7 @@ const resetFilters = () => {
             <label class="block text-sm font-medium text-gray-700 mb-1">Tag</label>
             <select 
               v-model="activeTag"
-              class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-lg"
+              class="block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 rounded-lg"
             >
               <option v-for="tag in allTags" :key="tag" :value="tag">
                 {{ tag }}
@@ -316,7 +310,7 @@ const resetFilters = () => {
               @click="activeCategory = category"
               class="px-4 py-2 text-sm font-medium rounded-full whitespace-nowrap"
               :class="{
-                'bg-blue-600 text-white': activeCategory === category,
+                'bg-emerald-600 text-white': activeCategory === category,
                 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300': activeCategory !== category
               }"
             >
@@ -331,7 +325,7 @@ const resetFilters = () => {
               @click="activeDifficulty = difficulty"
               class="px-4 py-2 text-sm font-medium rounded-full whitespace-nowrap"
               :class="{
-                'bg-green-600 text-white': activeDifficulty === difficulty,
+                'bg-emerald-600 text-white': activeDifficulty === difficulty,
                 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300': activeDifficulty !== difficulty
               }"
             >
@@ -346,7 +340,7 @@ const resetFilters = () => {
               @click="activeTag = tag"
               class="px-4 py-2 text-sm font-medium rounded-full whitespace-nowrap"
               :class="{
-                'bg-purple-600 text-white': activeTag === tag,
+                'bg-emerald-700 text-white': activeTag === tag,
                 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300': activeTag !== tag
               }"
             >
@@ -399,7 +393,7 @@ const resetFilters = () => {
         <div class="mt-6">
           <button 
             @click="resetFilters"
-            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
           >
             Reset All Filters
           </button>
@@ -407,23 +401,23 @@ const resetFilters = () => {
       </div>
 
       <!-- Newsletter signup -->
-      <div v-if="!isLoading" class="mt-12 bg-gradient-to-r from-blue-600 to-blue-500 rounded-xl p-6 sm:p-8 text-white">
+      <div v-if="!isLoading" class="mt-12 bg-gradient-to-r from-emerald-700 to-emerald-600 rounded-xl p-6 sm:p-8 text-white">
         <div class="max-w-2xl mx-auto text-center">
           <h2 class="text-xl sm:text-2xl font-bold mb-3">Get Weekly Financial Tips</h2>
-          <p class="text-sm sm:text-base text-blue-100 mb-6">
+          <p class="text-sm sm:text-base text-emerald-100 mb-6">
             Subscribe to our newsletter for exclusive content, new article notifications, and personalized financial advice.
           </p>
           <div class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
             <input 
               type="email" 
               placeholder="Your email address" 
-              class="flex-grow px-4 py-2 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300"
+              class="flex-grow px-4 py-2 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-300"
             >
-            <button class="px-6 py-2 bg-white text-blue-600 font-medium rounded-lg hover:bg-gray-100 transition-colors">
+            <button class="px-6 py-2 bg-white text-emerald-600 font-medium rounded-lg hover:bg-gray-100 transition-colors">
               Subscribe
             </button>
           </div>
-          <p class="text-xs text-blue-200 mt-3">
+          <p class="text-xs text-emerald-200 mt-3">
             We respect your privacy. Unsubscribe at any time.
           </p>
         </div>

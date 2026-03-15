@@ -6,14 +6,23 @@ const firestore = require('../firebaseConfig');
 router.post('/add-savings', async (req, res) => {
     const { userId, method, date, amount, duration } = req.body;
 
+    if (!userId || !method || !date || amount == null || !duration) {
+        return res.status(400).json({ message: 'All fields are required: userId, method, date, amount, duration' });
+    }
+
+    const parsedAmount = Number(amount);
+    if (isNaN(parsedAmount) || parsedAmount <= 0) {
+        return res.status(400).json({ message: 'Amount must be a positive number' });
+    }
+
     try {
         const savingsRef = firestore.collection('users').doc(userId).collection('savings');
         const savingsDoc = savingsRef.doc();
 
         await savingsDoc.set({
-            method,
+            method: method.trim(),
             date,
-            amount,
+            amount: parsedAmount,
             duration
         });
 

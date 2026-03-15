@@ -6,10 +6,29 @@ const apiBaseUrl = process.env.NODE_ENV === 'production'
     : 'http://localhost:3000';
 
 export const useTargetStore = defineStore('targetStore', {
+    persist: true,
     state: () => ({
         activeTargets: [],
         completedTargets: []
     }),
+
+    getters: {
+        totalActiveAmount(state) {
+            return state.activeTargets.reduce((sum, t) => sum + (parseFloat(t.amount) || 0), 0);
+        },
+        totalCompletedAmount(state) {
+            return state.completedTargets.reduce((sum, t) => sum + (parseFloat(t.amount) || 0), 0);
+        },
+        completionRate(state) {
+            const total = state.activeTargets.length + state.completedTargets.length;
+            if (total === 0) return 0;
+            return Math.round((state.completedTargets.length / total) * 100);
+        },
+        nearestDeadline(state) {
+            if (state.activeTargets.length === 0) return null;
+            return [...state.activeTargets].sort((a, b) => new Date(a.deadline) - new Date(b.deadline))[0];
+        }
+    },
 
     actions: {
 
@@ -46,7 +65,6 @@ export const useTargetStore = defineStore('targetStore', {
 
                 const result = await response.json();
                 this.activeTargets.push(result);
-                console.log('Target added successfully:', result);
                 return result;
 
             } catch (error) {
@@ -78,7 +96,6 @@ export const useTargetStore = defineStore('targetStore', {
                 const result = await response.json();
                 this.activeTargets = result.active;
                 this.completedTargets = result.completed;
-                console.log('Fetched targets:', result);
                 return result;
 
             } catch (error) {
@@ -110,7 +127,6 @@ export const useTargetStore = defineStore('targetStore', {
                 this.activeTargets = this.activeTargets.filter(target => target.id !== targetId);
                 const completedTarget = await response.json();
                 this.completedTargets.push(completedTarget);
-                console.log('Target marked as completed:', completedTarget);
                 return completedTarget;
 
             } catch (error) {

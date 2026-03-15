@@ -1,160 +1,144 @@
+<script setup>
+import { computed } from 'vue';
+import navigationBar from '@/components/navigationBar.vue';
+import chart from '@/components/chart.vue';
+import BarChart from '@/components/BarChart.vue';
+import { useUserStore } from '@/stores/userStore';
+import { useExpensesStore } from '@/stores/expensesStore';
+import { useSavingsStore } from '@/stores/savingStore';
+import { useTargetStore } from '@/stores/targetStore';
+import { useAnimatedNumber } from '@/composables/useAnimatedNumber';
+import { formatKES } from '@/utils/currency';
+
+const userStore = useUserStore();
+const expensesStore = useExpensesStore();
+const savingsStore = useSavingsStore();
+const targetStore = useTargetStore();
+
+const isGuest = computed(() => !userStore.user);
+
+const netWorth = computed(() => savingsStore.totalSavings + targetStore.totalCompletedAmount);
+const animatedNetWorth = useAnimatedNumber(netWorth);
+
+const savingsByMethod = computed(() => savingsStore.savingsByMethod);
+const savingsEntries = computed(() => {
+  const entries = Object.entries(savingsByMethod.value);
+  if (entries.length === 0) return [];
+  const max = Math.max(...entries.map(e => e[1]));
+  return entries.map(([method, amount]) => ({
+    method,
+    amount,
+    percent: max > 0 ? (amount / max) * 100 : 0
+  }));
+});
+
+// Monthly spending for last 6 months
+const monthlySpending = computed(() => {
+  const months = [];
+  const labels = [];
+  const values = [];
+  const now = new Date();
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const month = d.getMonth();
+    const year = d.getFullYear();
+    const label = d.toLocaleDateString('en-US', { month: 'short' });
+    const total = expensesStore.expenses
+      .filter(e => {
+        const ed = new Date(e.date);
+        return ed.getMonth() === month && ed.getFullYear() === year;
+      })
+      .reduce((sum, e) => sum + (parseFloat(e.amount) || 0), 0);
+    labels.push(label);
+    values.push(total);
+  }
+  return { labels, values };
+});
+
+const completionRate = computed(() => targetStore.completionRate);
+</script>
+
 <template>
- <div class="min-h-screen bg-gradient-to-br from-gray-50 to-green-50">
-  <navigationBar />
-  <div class=" py-6 px-2 sm:px-3 mt-12">
-      <RouterLink 
-        to="/dashboard" 
-        class="flex items-center text-blue-600 hover:text-blue-800 mb-6 transition-colors"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-        </svg>
-        <span class="ml-2 text-sm sm:text-base">Back to Dashboard</span>
-      </RouterLink>
-      <div class="max-w-4xl mx-auto">
-        <!-- Header -->
-        <div class="text-center mb-12">
-          <h1 class="text-4xl sm:text-5xl font-bold text-gray-800 mb-4">
-            Investment <span class="text-blue-600">Hub</span>
-          </h1>
-          <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-            Our powerful investment tools are coming soon to help grow your wealth
-          </p>
-        </div>
-  
-        <!-- Under Development Banner -->
-        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-12 animate-pulse">
-          <div class="flex">
-            <div class="flex-shrink-0">
-              <svg class="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-              </svg>
-            </div>
-            <div class="ml-3">
-              <h3 class="text-lg font-medium text-yellow-800">Under Active Development</h3>
-              <div class="mt-2 text-yellow-700">
-                <p>We're working hard to bring you advanced investment tracking and analysis tools.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-  
-        <!-- Coming Soon Features -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 transform hover:scale-[1.02] transition-all duration-300">
-            <div class="flex items-center mb-4">
-              <div class="bg-blue-100 p-3 rounded-full mr-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                </svg>
-              </div>
-              <h3 class="text-xl font-bold text-gray-800">Portfolio Tracking</h3>
-            </div>
-            <p class="text-gray-600">Monitor all your investments in one place with real-time performance metrics.</p>
-            <div class="mt-4 text-sm text-blue-600 font-medium">Coming Soon</div>
-          </div>
-  
-          <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 transform hover:scale-[1.02] transition-all duration-300">
-            <div class="flex items-center mb-4">
-              <div class="bg-green-100 p-3 rounded-full mr-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-              </div>
-              <h3 class="text-xl font-bold text-gray-800">Market Analysis</h3>
-            </div>
-            <p class="text-gray-600">Get insights and trends to help make informed investment decisions.</p>
-            <div class="mt-4 text-sm text-blue-600 font-medium">Coming Soon</div>
-          </div>
-  
-          <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 transform hover:scale-[1.02] transition-all duration-300">
-            <div class="flex items-center mb-4">
-              <div class="bg-purple-100 p-3 rounded-full mr-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 class="text-xl font-bold text-gray-800">Risk Assessment</h3>
-            </div>
-            <p class="text-gray-600">Understand your risk tolerance and get personalized investment recommendations.</p>
-            <div class="mt-4 text-sm text-blue-600 font-medium">Coming Soon</div>
-          </div>
-  
-          <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200 transform hover:scale-[1.02] transition-all duration-300">
-            <div class="flex items-center mb-4">
-              <div class="bg-indigo-100 p-3 rounded-full mr-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
-              </div>
-              <h3 class="text-xl font-bold text-gray-800">Diversification Tools</h3>
-            </div>
-            <p class="text-gray-600">Optimize your portfolio allocation across different asset classes.</p>
-            <div class="mt-4 text-sm text-blue-600 font-medium">Coming Soon</div>
-          </div>
-        </div>
-  
-        <!-- Progress Indicator -->
-        <div class="bg-white p-6 rounded-xl shadow-md mb-12">
-          <h3 class="text-lg font-medium text-gray-900 mb-4">Development Progress</h3>
-          <div class="mb-2 flex justify-between">
-            <span class="text-sm font-medium text-gray-700">Feature Completion</span>
-            <span class="text-sm font-medium text-blue-600">35%</span>
-          </div>
-          <div class="w-full bg-gray-200 rounded-full h-2.5">
-            <div class="bg-blue-600 h-2.5 rounded-full" style="width: 35%"></div>
-          </div>
-          <p class="mt-3 text-sm text-gray-600">We're making steady progress and will notify you when these tools are ready.</p>
-        </div>
-  
-        <!-- Notification Signup -->
-        <div class="bg-blue-50 rounded-xl p-8 text-center">
-          <h3 class="text-xl font-bold text-gray-800 mb-3">Want to be notified when we launch?</h3>
-          <p class="text-gray-600 mb-6 max-w-md mx-auto">Join our waiting list to get early access to these investment tools.</p>
-          <div class="max-w-md mx-auto flex">
-            <input 
-              type="email" 
-              placeholder="Enter your email" 
-              class="flex-grow px-4 py-3 rounded-l-lg border border-r-0 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            >
-            <button class="px-6 py-3 bg-blue-600 text-white font-medium rounded-r-lg hover:bg-blue-700 transition-colors">
-              Notify Me
-            </button>
-          </div>
-        </div>
+  <div class="min-h-screen bg-gray-50">
+    <navigationBar />
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 pt-16 pb-20 md:pb-6">
+      <div class="pt-4 pb-2">
+        <h1 class="text-xl sm:text-2xl font-semibold text-gray-900">Financial Overview</h1>
+        <p class="text-sm text-gray-500 mt-0.5">A snapshot of your financial health</p>
       </div>
+
+      <template v-if="!isGuest">
+        <!-- Net Worth -->
+        <div class="card p-6 mt-4 text-center">
+          <p class="text-xs font-medium text-gray-500 uppercase tracking-wide">Net Worth</p>
+          <p class="text-2xl sm:text-3xl font-bold text-gray-900 mt-1">{{ formatKES(animatedNetWorth) }}</p>
+          <p class="text-xs text-gray-400 mt-1">Savings + Completed Goals</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <!-- Expense Pie Chart -->
+          <div class="card p-4">
+            <h2 class="text-sm font-semibold text-gray-900 mb-2">Expense Distribution</h2>
+            <chart />
+          </div>
+
+          <!-- Monthly Spending Bar Chart -->
+          <div class="card p-4">
+            <h2 class="text-sm font-semibold text-gray-900 mb-2">Monthly Spending</h2>
+            <BarChart :labels="monthlySpending.labels" :values="monthlySpending.values" />
+          </div>
+        </div>
+
+        <!-- Savings Breakdown -->
+        <div class="card p-4 mt-4">
+          <h2 class="text-sm font-semibold text-gray-900 mb-3">Savings Breakdown</h2>
+          <div v-if="savingsEntries.length > 0" class="space-y-3">
+            <div v-for="entry in savingsEntries" :key="entry.method" class="flex items-center gap-3">
+              <span class="text-sm text-gray-600 w-20 shrink-0">{{ entry.method }}</span>
+              <div class="flex-1 h-3 bg-gray-100 rounded-full overflow-hidden">
+                <div class="h-full bg-emerald-500 rounded-full transition-all duration-500" :style="{ width: `${entry.percent}%` }"></div>
+              </div>
+              <span class="text-sm font-medium text-gray-900 w-28 text-right">{{ formatKES(entry.amount) }}</span>
+            </div>
+          </div>
+          <p v-else class="text-sm text-gray-400 text-center py-4">No savings recorded yet</p>
+        </div>
+
+        <!-- Goals Overview -->
+        <div class="card p-4 mt-4">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="text-sm font-semibold text-gray-900">Goals Overview</h2>
+            <span class="text-xs text-gray-500">{{ completionRate }}% completion rate</span>
+          </div>
+          <div v-if="targetStore.activeTargets.length > 0" class="space-y-3">
+            <div v-for="target in targetStore.activeTargets" :key="target.id" class="flex items-center gap-3">
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium text-gray-900 truncate">{{ target.description }}</p>
+                <p class="text-xs text-gray-500">{{ formatKES(parseFloat(target.amount)) }}</p>
+              </div>
+              <div class="w-20">
+                <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                  <div class="h-full bg-emerald-500 rounded-full" :style="{ width: `${target.progress || 0}%` }"></div>
+                </div>
+              </div>
+              <span class="text-xs text-gray-500 w-8 text-right">{{ target.progress || 0 }}%</span>
+            </div>
+          </div>
+          <p v-else class="text-sm text-gray-400 text-center py-4">No active goals</p>
+        </div>
+      </template>
+
+      <!-- Guest -->
+      <template v-else>
+        <div class="card p-6 mt-6 text-center">
+          <svg class="w-12 h-12 mx-auto text-emerald-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          </svg>
+          <h3 class="text-lg font-semibold text-gray-900 mb-1">Sign in for your financial overview</h3>
+          <p class="text-sm text-gray-500 mb-4">View charts, savings breakdowns, and track your progress.</p>
+          <RouterLink to="/login" class="btn-primary text-sm inline-block">Sign In</RouterLink>
+        </div>
+      </template>
     </div>
- </div>
-  </template>
-  
-  <script setup>
-  import navigationBar from '@/components/navigationBar.vue';
-  import { useHead } from '@vueuse/head'
-  useHead({
-    title: 'Investment Hub (Coming Soon)',
-    meta: [
-      {
-        name: 'description',
-        content: 'Our investment tools are under development. Sign up to be notified when we launch.'
-      }
-    ]
-  });
-  </script>
-  
-  
-  <style scoped>
-  /* Animation for the coming soon cards */
-  @keyframes subtlePulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.01); }
-  }
-  
-  .animate-pulse {
-    animation: subtlePulse 2s infinite;
-  }
-  
-  /* Transition for hover effects */
-  .transform {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  </style>
+  </div>
+</template>

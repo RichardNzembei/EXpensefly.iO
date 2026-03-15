@@ -21,72 +21,82 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/login'
+      redirect: '/dashboard'
     },
     {
       path: '/dashboard',
       name: 'dashboard',
-      component: Dashboard
+      component: Dashboard,
+      meta: { public: true }
     },
     {
       path: '/register',
       name: 'register',
-      component: Register
+      component: Register,
+      meta: { public: true }
     },
     {
       path: '/login',
       name: 'login',
-      component: Login
+      component: Login,
+      meta: { public: true }
     },
     {
       path: '/expenses',
       name: 'expenses',
-      component: Expenses
+      component: Expenses,
+      meta: { guestViewable: true }
     },
     {
       path: '/savings',
       name: 'savings',
-      component: Savings
+      component: Savings,
+      meta: { guestViewable: true }
     },
     {
       path: '/targets',
       name: 'targets',
-      component: Targets
+      component: Targets,
+      meta: { guestViewable: true }
     },
     {
       path: '/smmes',
       name: 'smmes',
-      component: Smmes
+      component: Smmes,
+      meta: { public: true }
     },
     {
       path: '/crypto',
       name: 'crypto',
-      component: Crypto
+      component: Crypto,
+      meta: { public: true }
     },
     {
       path: '/profile',
       name: 'profile',
-      component: Profile
+      component: Profile,
+      meta: { requiresAuth: true }
     },
     {
       path: '/monocomy',
       name: 'monocomy',
-      component: Monocomy
+      component: Monocomy,
+      meta: { public: true }
     },
     {
       path: '/expensessnipet',
       name: 'expensessnipet',
-      component:ExpensesSnipet
+      component: ExpensesSnipet
     },
     {
       path: '/targetssnipet',
       name: 'targetssnipet',
-      component:TargetsSnipet
+      component: TargetsSnipet
     },
     {
       path: '/savingssnipet',
       name: 'savingssnipet',
-      component:SavingsSnipet
+      component: SavingsSnipet
     },
     {
       path: '/:catchAll(.*)',
@@ -96,7 +106,8 @@ const router = createRouter({
     {
       path: '/investments',
       name: 'investments',
-      component: Investments
+      component: Investments,
+      meta: { public: true }
     }
   ]
 });
@@ -104,10 +115,12 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore();
   await userStore.initializeUser();
-  if (!userStore.user && to.name !== 'login' && to.name !== 'register') {
+
+  if (to.meta.requiresAuth && !userStore.user) {
     next({ name: 'login' });
   } else {
     next();
   }
 });
+
 export default router;

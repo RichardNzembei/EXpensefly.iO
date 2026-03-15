@@ -1,16 +1,21 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, onMounted, computed } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import navigationBar from '@/components/navigationBar.vue';
 import chart from '@/components/chart.vue';
 import userExpenses from '@/components/userExpenses.vue';
 import { useUserStore } from '@/stores/userStore';
 import { useExpensesStore } from '@/stores/expensesStore';
 import receiptScanner from '@/components/receiptScanner.vue';
+import { useToast } from '@/composables/useToast';
 
 const userStore = useUserStore();
 const expensesStore = useExpensesStore();
 const router = useRouter();
+const route = useRoute();
+const { error: toastError } = useToast();
+
+const isGuest = computed(() => !userStore.user);
 const date = ref('');
 const amount = ref('');
 const name = ref('');
@@ -18,142 +23,116 @@ const category = ref('');
 const showForm = ref(false);
 
 const handleReceiptScanned = (receiptData) => {
+  if (isGuest.value) { router.push('/login'); return; }
   name.value = receiptData.merchant || '';
   amount.value = receiptData.amount || '';
   category.value = receiptData.category || '';
   date.value = receiptData.date || date.value;
   showForm.value = true;
 };
+
 const addNewExpense = async () => {
   if (!date.value || !amount.value || !category.value || !name.value) {
-    alert("Please fill all fields");
+    toastError("Please fill all fields");
     return;
   }
   try {
     await expensesStore.addExpense(
-        name.value.trim(),
-        parseFloat(amount.value),
-        category.value,
-        date.value
+      name.value.trim(),
+      parseFloat(amount.value),
+      category.value,
+      date.value
     );
     name.value = '';
     amount.value = '';
     category.value = '';
     date.value = '';
     showForm.value = false;
-  } catch (error) {
-    console.error("Error adding expense:", error);
-    alert("Failed to add expense. Please try again.");
+  } catch (err) {
+    console.error("Error adding expense:", err);
+    toastError("Failed to add expense. Please try again.");
   }
 };
+
 onMounted(() => {
   const today = new Date();
   date.value = today.toISOString().split('T')[0];
+  if (route.query.add === 'true' && !isGuest.value) {
+    showForm.value = true;
+  }
 });
 </script>
-<template>
-  <div class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-green-50">
-    <navigationBar />
-    <header class="bg-white border-b border-gray-100 sticky top-0 z-10 backdrop-blur-sm bg-white/90 mt-16">
-      <div class="max-w-6xl mx-auto px-4 py-4 flex items-center gap-4">
-        <RouterLink to="/dashboard" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-          </svg>
-        </RouterLink>
-        <div class="flex-1">
-          <h1 class="text-xl font-semibold text-gray-900">Expense Tracker</h1>
-          <p class="text-sm text-gray-500">Manage your spending</p>
-        </div>
-      </div>
-    </header>
 
-    <main class="max-w-6xl mx-auto px-4 py-6 space-y-6">
-      <receiptScanner :onReceiptScanned="handleReceiptScanned" />
-      <div v-if="!showForm" class="text-center">
+<template>
+  <div class="min-h-screen bg-gray-50">
+    <navigationBar />
+    <main class="max-w-5xl mx-auto px-4 sm:px-6 pt-16 pb-20 md:pb-6 space-y-4">
+      <div class="pt-4">
+        <h1 class="text-xl font-semibold text-gray-900">Expense Tracker</h1>
+        <p class="text-sm text-gray-500 mt-0.5">Manage your spending</p>
+      </div>
+
+      <!-- Guest CTA -->
+      <div v-if="isGuest" class="card p-6 text-center">
+        <svg class="h-12 w-12 mx-auto text-emerald-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+        </svg>
+        <h3 class="text-lg font-semibold text-gray-900 mb-1">Sign in to track expenses</h3>
+        <p class="text-sm text-gray-500 mb-4">Create an account to add, scan receipts, and manage your spending.</p>
+        <RouterLink to="/login" class="btn-primary inline-block text-sm">Sign In to Get Started</RouterLink>
+      </div>
+
+      <!-- Receipt scanner (auth only) -->
+      <receiptScanner v-if="!isGuest" :onReceiptScanned="handleReceiptScanned" />
+
+      <!-- Add button (auth only) -->
+      <div v-if="!showForm && !isGuest">
         <button
-            @click="showForm = true"
-            class="w-full bg-white hover:bg-gray-50 border-2 border-dashed border-gray-300 hover:border-green-600 text-gray-600 hover:text-green-600 font-medium py-4 rounded-2xl transition-all flex items-center justify-center gap-2"
+          @click="showForm = true"
+          class="w-full bg-white hover:bg-gray-50 border-2 border-dashed border-gray-200 hover:border-emerald-400 text-gray-500 hover:text-emerald-600 font-medium py-4 rounded-xl transition-all flex items-center justify-center gap-2"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
           </svg>
           <span>Add Expense Manually</span>
         </button>
       </div>
+
       <transition
-          enter-active-class="transition ease-out duration-200"
-          enter-from-class="opacity-0 scale-95"
-          enter-to-class="opacity-100 scale-100"
-          leave-active-class="transition ease-in duration-150"
-          leave-from-class="opacity-100 scale-100"
-          leave-to-class="opacity-0 scale-95"
+        enter-active-class="transition ease-out duration-200"
+        enter-from-class="opacity-0 scale-95"
+        enter-to-class="opacity-100 scale-100"
+        leave-active-class="transition ease-in duration-150"
+        leave-from-class="opacity-100 scale-100"
+        leave-to-class="opacity-0 scale-95"
       >
-        <section v-if="showForm" class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-          <div class="flex items-center justify-between mb-6">
-            <h2 class="text-lg font-semibold text-gray-900">New Expense</h2>
-            <button
-                @click="showForm = false"
-                class="text-gray-400 hover:text-gray-600 p-1 rounded-lg hover:bg-gray-100 transition-colors"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <section v-if="showForm && !isGuest" class="card p-5">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-base font-semibold text-gray-900">New Expense</h2>
+            <button @click="showForm = false" class="text-gray-400 hover:text-gray-600 p-1 rounded-lg hover:bg-gray-100 transition-colors">
+              <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
               </svg>
             </button>
           </div>
           <form @submit.prevent="addNewExpense" class="space-y-4">
             <div>
-              <label for="expense-name" class="block text-sm font-medium text-gray-700 mb-2">
-                Description
-              </label>
-              <input
-                  id="expense-name"
-                  v-model="name"
-                  type="text"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all"
-                  placeholder="e.g. Groceries"
-                  required
-              >
+              <label for="expense-name" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+              <input id="expense-name" v-model="name" type="text" class="input-field" placeholder="e.g. Groceries" required>
             </div>
             <div class="grid grid-cols-2 gap-4">
               <div>
-                <label for="expense-amount" class="block text-sm font-medium text-gray-700 mb-2">
-                  Amount (Ksh)
-                </label>
-                <input
-                    id="expense-amount"
-                    v-model="amount"
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all"
-                    placeholder="0.00"
-                    required
-                >
+                <label for="expense-amount" class="block text-sm font-medium text-gray-700 mb-1">Amount (Ksh)</label>
+                <input id="expense-amount" v-model="amount" type="number" min="0" step="0.01" class="input-field" placeholder="0.00" required>
               </div>
               <div>
-                <label for="expense-date" class="block text-sm font-medium text-gray-700 mb-2">
-                  Date
-                </label>
-                <input
-                    id="expense-date"
-                    v-model="date"
-                    type="date"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all bg-white"
-                    required
-                >
+                <label for="expense-date" class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                <input id="expense-date" v-model="date" type="date" class="input-field" required>
               </div>
             </div>
             <div>
-              <label for="expense-category" class="block text-sm font-medium text-gray-700 mb-2">
-                Category
-              </label>
-              <select
-                  id="expense-category"
-                  v-model="category"
-                  class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all bg-white appearance-none cursor-pointer"
-                  required
-              >
+              <label for="expense-category" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+              <select id="expense-category" v-model="category" class="input-field appearance-none cursor-pointer" required>
                 <option value="" disabled>Select category</option>
                 <option value="Food">Food</option>
                 <option value="Transportation">Transportation</option>
@@ -163,36 +142,18 @@ onMounted(() => {
                 <option value="Outings">Outings</option>
               </select>
             </div>
-            <button
-                type="submit"
-                class="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-xl transition-colors shadow-sm hover:shadow-md"
-            >
-              Save Expense
-            </button>
+            <button type="submit" class="w-full btn-primary py-3">Save Expense</button>
           </form>
         </section>
       </transition>
-      <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-        <div class="flex items-center gap-3 mb-4">
-          <div class="p-2 bg-blue-100 rounded-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
-            </svg>
-          </div>
-          <h2 class="text-lg font-semibold text-gray-900">Expense Breakdown</h2>
-        </div>
+
+      <section class="card p-4">
+        <h2 class="text-sm font-semibold text-gray-900 mb-3">Expense Breakdown</h2>
         <chart />
       </section>
-      <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-        <div class="flex items-center gap-3 mb-4">
-          <div class="p-2 bg-green-100 rounded-lg">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-            </svg>
-          </div>
-          <h2 class="text-lg font-semibold text-gray-900">Recent Expenses</h2>
-        </div>
+
+      <section class="card p-4">
+        <h2 class="text-sm font-semibold text-gray-900 mb-3">Recent Expenses</h2>
         <userExpenses />
       </section>
     </main>
@@ -200,21 +161,11 @@ onMounted(() => {
 </template>
 
 <style scoped>
-input[type="date"]::-webkit-calendar-picker-indicator {
-  cursor: pointer;
-  opacity: 0.6;
-}
-input[type="date"]::-webkit-calendar-picker-indicator:hover {
-  opacity: 1;
-}
 select {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
   background-position: right 0.75rem center;
   background-repeat: no-repeat;
   background-size: 1.5em 1.5em;
   padding-right: 2.5rem;
-}
-.transition-all {
-  transition: all 0.2s ease;
 }
 </style>
